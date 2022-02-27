@@ -79,7 +79,8 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "CS3141-R02-team12:build"
+            "browserTarget": "CS3141-R02-team12:build",
+            "proxyConfig": "src/proxy.conf.json"
           }
         },
         "test": {
