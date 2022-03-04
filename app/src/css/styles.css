@@ -497,6 +497,14 @@ progress {
   display: none !important;
 }
 
+.banner{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display:block;
+  padding: 5%;
+}
+
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
