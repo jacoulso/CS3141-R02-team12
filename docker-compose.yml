@@ -1,12 +1,18 @@
-services:
+# Define our services 
+services: 
+
+  # Database -- loaded first to ensure dependenicies get met
   mysqldb:
     image: mysql:8.0
-    container_name: mysqlcontainer
+    container_name: database
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
+    working_dir: /database
+    # Copy our db init code over and save the database data locally 
     volumes:
-      - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
-      - ./database:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - ./database/mysqldb:/var/lib/mysql
+    # Default port of 3306
     ports:
       - 3306:3306
     expose:
@@ -21,9 +27,10 @@ services:
     networks:
       - internalnet
 
-  smartcal_container:
-    image: node:lts-alpine
-    working_dir: /app
+  # Main App
+  smartcal_app:
+    container_name: app
+    build: app
     volumes:
       - ./:/app
     ports:
@@ -35,9 +42,10 @@ services:
       sh -c "npm install &&
              npx ng serve --host 0.0.0.0"
 
-  smartcal_server_container:
-    image: node:lts-alpine
-    working_dir: /server
+  # Server
+  smartcal_server:
+    container_name: server
+    build: server
     volumes:
       - ./server:/server
     # port 3000 is default, matches to src/proxy.conf.json
@@ -61,7 +69,9 @@ services:
       - internalnet
     command: >
       sh -c "npm i -g nodemon && npm install && nodemon ./bin/www"
-      
+
+
+# Open a tickle bridge for the containers to  eachother
 networks:
   internalnet:
     driver: bridge

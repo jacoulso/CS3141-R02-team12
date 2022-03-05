@@ -11,7 +11,28 @@
 36    - Artiem Sharkota - Developer     
 
 --------------------------------------
+# MEAN
+This project uses a MEAN SQL flavor development environment
+
+--------------------------------------
+# Docker
+This project is hosted via docker. 
+To setup docker see [Getting Started](https://docs.google.com/document/d/12LbK2ZLiGTFO6RUrYfEkzDgq8ahdVUEdK8qNOcvLeXA/edit)
+Running docker:
+ - Open a terminal
+ - cd "....\CS3141-R02-team12\"
+ - docker-compose up -d
+ - go to http://localhost:4200/ for the dev webapp
+ - go to http://localhost:3000/api for dev server api
+
+--------------------------------------
+# MySQL 
+This project uses a mySQL server as a backend. DB config is controlled under .\database\init.sql
+
+--------------------------------------
+# Angular
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
+
 
 ## Development server
 
