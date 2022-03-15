@@ -5,7 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 // Get our API routes
-const api = require('./api/api');
+const router = require('./api/api');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 })
 
 // Set our api routes
-app.use('/', api);
+app.use('/', router);
 
 
 /**
