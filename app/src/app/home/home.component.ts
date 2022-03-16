@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CalendarView } from 'angular-calendar';
 
 @Component({
   selector: 'app-home',
@@ -12,4 +13,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  setView(view: CalendarView) {
+    this.view = view;
+  }
 }
