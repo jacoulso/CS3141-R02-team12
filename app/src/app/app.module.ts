@@ -5,12 +5,14 @@ import { AppComponent } from './app.component';
 import {CalendarCommonModule, CalendarModule, CalendarMonthModule, DateAdapter} from "angular-calendar";
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import {SidebarComponent} from "./home/sidebar/sidebar.component";
+import { HeaderComponent } from './home/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    SidebarComponent
+    SidebarComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
