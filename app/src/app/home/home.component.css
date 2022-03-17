@@ -2,6 +2,8 @@
 .wrapper {
     display: flex;
     align-items: stretch;
+    min-height: 100vh;
+
 }
 
 #content {
@@ -9,4 +11,7 @@
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+}
+body{
+    background-image: url("../../assets/homebackground.jpg");
 }
