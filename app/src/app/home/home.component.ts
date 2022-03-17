@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CalendarEvent, CalendarModule } from 'angular-calendar';
+import {SidebarComponent} from "./sidebar/sidebar.component";
 
 
 @Component({
