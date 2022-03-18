@@ -9,7 +9,6 @@ USE smartcal_mysqldb;
 -- Since pretty much everything has a foreign key attached to something, we
 -- have to drop everything in roguhly this order:
 --
---  * Procedures
 --  * Lookups
 --  * Tables
 --
@@ -18,8 +17,6 @@ USE smartcal_mysqldb;
 ----------------------------------------------------------------------------
 
 SET FOREIGN_KEY_CHECKS = 0; -- Disable warnings while we kill everything
-
--- Procedures (SOON^TM)
 
 -- Lookups
 DROP TABLE IF EXISTS UserDoNotDisturbHoursLookup;
@@ -147,6 +144,4 @@ CREATE TABLE FriendLookup (
     PRIMARY KEY (uID, friendID)
 );
 
-----------------------------------------------------------------------------
---  PROCEDURES                                                            --
 ----------------------------------------------------------------------------
