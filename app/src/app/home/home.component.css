@@ -12,6 +12,14 @@
     min-height: 100vh;
     transition: all 0.3s;
 }
+
+.header-row {
+    width: 100%;
+}
+
 body{
     background-image: url("../../assets/homebackground.jpg");
+}
+.container-fluid {
+    padding: 0px;
 }
