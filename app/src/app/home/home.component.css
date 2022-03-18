@@ -13,12 +13,13 @@
     transition: all 0.3s;
 }
 
-.header-row {
-    width: 100%;
+.header-row{
+    width:100%;
 }
 
 body{
     background-image: url("../../assets/homebackground.jpg");
+
 }
 
 .container-fluid {
@@ -32,6 +33,6 @@ body{
 
 .button{
     color:#fff;
-    background-color:#b19cd9;
+    background-color:#9164e5;
     border-color:#301934
 }
