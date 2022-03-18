@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarEvent, CalendarModule } from 'angular-calendar';
-import {SidebarComponent} from "./sidebar/sidebar.component";
+import {CalendarEvent, CalendarView} from 'angular-calendar';
 
 
 @Component({
@@ -10,6 +9,17 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
 })
 export class HomeComponent implements OnInit {
   public viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    console.log(date);
+    //this.openAppointmentList(date)
+  }
+  
   public events: CalendarEvent[] = [];
 
   constructor() {

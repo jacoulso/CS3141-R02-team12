@@ -20,6 +20,18 @@
 body{
     background-image: url("../../assets/homebackground.jpg");
 }
+
 .container-fluid {
     padding: 0px;
+}
+
+.month{
+    flex:0 0 auto;width:33.33333333%;
+    color: white
+}
+
+.button{
+    color:#fff;
+    background-color:#b19cd9;
+    border-color:#301934
 }
