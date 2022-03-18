@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
 
     $(document).ready(function () {
 
-      $('#sidebar').hover(function () {
+      $('#sidebarExpand').on('click',function () {
         $('#sidebar').toggleClass('active');
       });
 
