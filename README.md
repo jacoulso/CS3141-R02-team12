@@ -30,6 +30,10 @@ Running docker:
 This project uses a mySQL server as a backend. DB config is controlled under .\database\init.sql
 
 --------------------------------------
+# Express 
+This project uses an express server as a linker between the backend and the frontend. checkout /server for details
+
+--------------------------------------
 # Angular
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.3.
 

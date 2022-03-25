@@ -1,41 +1,27 @@
-// Get dependencies
 const express = require('express');
 const path = require('path');
-const http = require('http');
-const bodyParser = require('body-parser');
-
-// Get our API routes
-const router = require('./api/api');
 
 const app = express();
+const PORT = 3000;
 
-// Parsers for POST data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '/views'))
 
-// Cross Origin middleware
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  next()
+app.get('/', (req, res) => {
+  res.send(`Node and express server running on port ${PORT}. Checkout '/status' to see how it's doing`)
 })
 
-// Set our api routes
-app.use('/', router);
+app.get('/event/:eID/:uID', (req, res) => {
+    const { eID, uID } = req.params;
+    console.dir(`eID: ${eID}, uID: ${uID}`);
+    res.send(`eID: ${eID}, uID: ${uID}`);
+});
 
+app.post('/event', (req, res) => {
+    console.dir("Called event request...");
+    res.send('Mega Worm test');
+})
 
-/**
- * Get port from environment and store in Express.
- */
-const port = process.env.PORT || '3000';
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+app.listen(PORT, () => {
+    console.log(`Your server is running on port ${PORT}`)
+})

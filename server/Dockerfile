@@ -11,5 +11,5 @@ COPY . .
 COPY .env .
 # Expose the port the server runs in
 EXPOSE 3000
-CMD node ../app/src/login.html
+CMD npm start
 RUN echo Server up!
