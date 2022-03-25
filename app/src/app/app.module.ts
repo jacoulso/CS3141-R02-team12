@@ -6,8 +6,12 @@ import {CalendarCommonModule, CalendarModule, CalendarMonthModule, DateAdapter} 
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import {SidebarComponent} from "./home/sidebar/sidebar.component";
 import { HeaderComponent } from './home/header/header.component';
-import { ModalComponent } from './modal/modal.component';
+//import { ModalComponent } from './modal/modal.component';
 import { CalendarComponent } from './home/calendar/calendar.component';
+
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+
+
 
 @NgModule({
   declarations: [
@@ -15,7 +19,7 @@ import { CalendarComponent } from './home/calendar/calendar.component';
     routingComponents,
     SidebarComponent,
     HeaderComponent,
-    ModalComponent,
+    //ModalComponent,
     CalendarComponent
   ],
   imports: [
@@ -27,7 +31,8 @@ import { CalendarComponent } from './home/calendar/calendar.component';
       useFactory: adapterFactory,
     }),
     CalendarCommonModule,
-    CalendarMonthModule
+    CalendarMonthModule,
+    FullCalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
