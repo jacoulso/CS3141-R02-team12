@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {CalendarOptions, DateSelectArg, EventApi, EventClickArg} from "@fullcalendar/angular";
+import {FullCalendarModule, CalendarOptions, DateSelectArg, EventApi, EventClickArg} from "@fullcalendar/angular";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  iCalendarPlugin
+])
 
 @Component({
   selector: 'app-calendar',
