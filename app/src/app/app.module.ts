@@ -6,13 +6,17 @@ import {CalendarCommonModule, CalendarModule, CalendarMonthModule, DateAdapter} 
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import {SidebarComponent} from "./home/sidebar/sidebar.component";
 import { HeaderComponent } from './home/header/header.component';
+import { ModalComponent } from './modal/modal.component';
+import { CalendarComponent } from './home/calendar/calendar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    ModalComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
