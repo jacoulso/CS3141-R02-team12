@@ -9,7 +9,8 @@ import { HeaderComponent } from './home/header/header.component';
 //import { ModalComponent } from './modal/modal.component';
 import { CalendarComponent } from './home/calendar/calendar.component';
 
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ModalComponent } from './modal/modal.component'; // must go before plugins
 
 
 
@@ -20,7 +21,8 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // must go before pl
     SidebarComponent,
     HeaderComponent,
     //ModalComponent,
-    CalendarComponent
+    CalendarComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
