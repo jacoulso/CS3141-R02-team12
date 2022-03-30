@@ -18,31 +18,31 @@
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card bg-dark text-white" style="border-radius: 1rem; ">
           <div class="card-body p-5 text-center">
+            <form action="/login" method="get">
+              <div class=" mt-md-4 pb-5">
 
-            <div class=" mt-md-4 pb-5">
+                <h2 style="font-size: 2em" class="fw-bold mb-2 text-uppercase">Login</h2>
+                <p class="text-white-50 mb-5">Please enter your email and password!</p>
 
-              <h2 style="font-size: 2em" class="fw-bold mb-2 text-uppercase">Login</h2>
-              <p class="text-white-50 mb-5">Please enter your email and password!</p>
+                <div class="form-outline form-white mb-4">
+                  <input type="email" id="typeEmailX" class="form-control form-control-lg " />
+                  <label class="form-label" for="typeEmailX">Email</label>
+                </div>
 
-              <div class="form-outline form-white mb-4">
-                <input type="email" id="typeEmailX" class="form-control form-control-lg " />
-                <label class="form-label" for="typeEmailX">Email</label>
+                <div class="form-outline form-blue mb-4">
+                  <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                  <label class="form-label" for="typePasswordX">Password</label>
+                </div>
+
+                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="/reset-password">Forgot password?</a></p>
+
+                <a routerLink="/home" routerLinkActive="active"><button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button></a>
               </div>
-
-              <div class="form-outline form-blue mb-4">
-                <input type="password" id="typePasswordX" class="form-control form-control-lg" />
-                <label class="form-label" for="typePasswordX">Password</label>
+        
+              <div>
+                <p class="mb-0">Don't have an account? <a class="text-white fw-bold" href="/sign-up">Sign Up</a></p>
               </div>
-
-              <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="/reset-password">Forgot password?</a></p>
-
-              <a routerLink="/home" routerLinkActive="active"><button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button></a>
-            </div>
-
-            <div>
-              <p class="mb-0">Don't have an account? <a class="text-white fw-bold" href="/sign-up">Sign Up</a></p>
-            </div>
-
+            </form>
           </div>
         </div>
       </div>

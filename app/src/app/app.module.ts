@@ -12,7 +12,8 @@ import { CalendarComponent } from './home/calendar/calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ModalComponent } from './modal/modal.component'; // must go before plugins
 
-
+import { HttpClientModule } from '@angular/common/http';
+import { ApiserviceService } from './apiservice.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ModalComponent } from './modal/modal.component'; // must go before plug
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     CalendarModule,
     AppRoutingModule,
     CalendarModule.forRoot({
@@ -36,7 +38,7 @@ import { ModalComponent } from './modal/modal.component'; // must go before plug
     CalendarMonthModule,
     FullCalendarModule
   ],
-  providers: [],
+  providers: [ApiserviceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
