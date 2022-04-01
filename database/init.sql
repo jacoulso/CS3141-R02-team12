@@ -49,8 +49,8 @@ CREATE TABLE Users (
 CREATE TABLE UserDoNotDisturbHoursLookup (
     dndID INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
     uID INT,
-    startDate DATETIME,
-    endDate DATETIME,
+    startDate TIME,
+    endDate TIME,
     recurrence VARCHAR(7),
 
     FOREIGN KEY (uID) REFERENCES Users(UID) ON DELETE CASCADE
@@ -101,10 +101,11 @@ CREATE TABLE Events (
     creatorID INT, 
     calendarID INT,
     colorID INT,
-    title VARCHAR(256), 
+    title VARCHAR(256) NOT NULL, 
     isAllDay BOOLEAN DEFAULT False,
     dateTimeStart DATETIME,
     dateTimeEnd DATETIME,
+    duration TIME,
     location VARCHAR(256),
     eventTypeID INT DEFAULT 0,
     priorityID INT DEFAULT 0,
@@ -145,3 +146,38 @@ CREATE TABLE FriendLookup (
 );
 
 ----------------------------------------------------------------------------
+
+-- Display a certain event type
+create procedure display_type()
+	begin
+    
+    end;
+
+-- Display all selected event types for a calendar
+create procedure display_cal()
+	begin
+    
+    end;
+
+-- Find the next meeting time (disregarding priority)
+create procedure is_available()
+	begin
+    
+    end;
+
+-- Search for friends by username or email
+delimiter //
+create procedure friend_search(IN keyword varchar(128))
+	begin
+    select username
+    from Users
+    where username like concat('%', @keyword, '%')
+    or email like concat('%', @keyword, '%');
+    end; //
+    
+-- Create a user and their default calendar
+create procedure user_create(IN username varchar(100), IN password varchar(256), IN email varchar(256))
+	begin
+    insert into Users values(username, password, email);
+    insert into Calendars values(username);
+    end;
