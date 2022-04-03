@@ -18,6 +18,13 @@ USE smartcal_mysqldb;
 
 SET FOREIGN_KEY_CHECKS = 0; -- Disable warnings while we kill everything
 
+-- Procedures
+DROP PROCEDURE IF EXISTS display_type;
+DROP PROCEDURE IF EXISTS display_cal;
+DROP PROCEDURE IF EXISTS available;
+DROP PROCEDURE IF EXISTS friend_search;
+DROP PROCEDURE IF EXISTS user_create;
+
 -- Lookups
 DROP TABLE IF EXISTS UserDoNotDisturbHoursLookup;
 DROP TABLE IF EXISTS UserCalendarsLookup;
@@ -90,6 +97,7 @@ CREATE TABLE PriorityLookup (
 -- stores a hexcode value without the leading #. #FFFFFF -> FFFFFF
 CREATE TABLE EventColorLookup (
     ecID INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
+        colorName VARCHAR(50) DEFAULT '',
     color VARCHAR(6) DEFAULT '000000' 
 );
 
@@ -145,39 +153,76 @@ CREATE TABLE FriendLookup (
     PRIMARY KEY (uID, friendID)
 );
 
+---------------------------------------------------------------------------- 
+--  PROCEDURES                                                            --
 ----------------------------------------------------------------------------
+delimiter //
 
 -- Display a certain event type
 create procedure display_type()
 	begin
     
-    end;
+    end //
 
 -- Display all selected event types for a calendar
 create procedure display_cal()
 	begin
     
-    end;
+    end //
 
 -- Find the next meeting time (disregarding priority)
-create procedure is_available()
+create procedure available()
 	begin
     
-    end;
+    end //
 
 -- Search for friends by username or email
-delimiter //
 create procedure friend_search(IN keyword varchar(128))
 	begin
     select username
     from Users
     where username like concat('%', @keyword, '%')
     or email like concat('%', @keyword, '%');
-    end; //
+    end //
     
 -- Create a user and their default calendar
-create procedure user_create(IN username varchar(100), IN password varchar(256), IN email varchar(256))
+create procedure user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
 	begin
-    insert into Users values(username, password, email);
-    insert into Calendars values(username);
-    end;
+    insert into Users (username, password, email) values(newName, newPass, newMail);
+    insert into Calendars (title) values(newName);
+
+    INSERT INTO UserCalendarsLookup(cID, uID) VALUES ( 
+			(SELECT cID FROM Calendars WHERE title=newName), 
+			(SELECT uID FROM Users WHERE username=newName) 
+         );
+    end //
+
+
+---------------------------------------------------------------------------- 
+--  SEEDERS                                                               --
+----------------------------------------------------------------------------
+
+-- Fill our lookups so we can call other propogation procedures
+INSERT INTO EventTypeLookup (etID, typeName) VALUES 
+    (1,'Event'),
+    (2,'Reminder'),
+    (3,'Task')
+//
+
+INSERT INTO PriorityLookup (pID, priorityName) VALUES
+    (1,'Highest'),
+    (2,'High'),
+    (3,'Medium'),
+    (4,'Low'),
+    (5,'Lowest')
+//
+
+INSERT INTO EventColorLookup (ecID, colorName, color) VALUES 
+    (1,'Red','FF0000'),
+    (2,'Green','00FF00'),
+    (3,'Blue','0000FF')
+//
+
+-- Create a dummy user
+CALL user_create('jlmillim','worm','jlmillim@mtu.edu')	//
+
