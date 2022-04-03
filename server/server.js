@@ -82,20 +82,72 @@ app.get('/login/:userCred/:userPassword', (req, res) => {
     })
 });
 
+// User Signup, returns mySQL code if valid, null if not
+app.post('/signup', (req, res) => {
+    const { userCred, userPassword, userEmail } = req.body;
 
+    //convert password to hash here....
+
+    query = userQueries.signup;
+    queryParams = [userCred, userPassword, userEmail];
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted addUser: '${queryParams[0]}' with '${queryParams[2]}' query: '${query}'...`);
+
+    db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Insert ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
+});
 
 // ---- Calendars -----------------------
 
 // ---- Events --------------------------
 
 // List all events from a user
-app.get('/events/:eID/:uID', (req, res) => {
+app.get('/events/:uID', (req, res) => {
+    const { uID } = req.params;
+    query = eventQueries.getAllEvents;
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted to get all events for user with ID: '${uID}.' Query: '${query}'...`);
+
+    db.query(query, uID, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Query ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
+});
+
+// List specific event from a user
+app.get('/events/:uID/:eID', (req, res) => {
     const { eID, uID } = req.params;
     query = eventQueries.getEvent;
     queryParams = [eID, uID];
 
     console.log(`***----------------------------------------------------------------`);
-    console.log(`***Attempted to get events for: '${queryParams[0]}' with '${queryParams[1]}' query: '${query}'...`);
+    console.log(`***Attempted to get event with ID: '${queryParams[0]}' for user with ID: '${queryParams[1]}' query: '${query}'...`);
 
     db.query(query, queryParams, (err, result) => {
         if (err) {
@@ -114,8 +166,8 @@ app.get('/events/:eID/:uID', (req, res) => {
     })
 });
 
-// Create new Event
-app.post('/events/:eID/:uID', (req, res) => {
+// Create new Event for given user
+app.post('/events/:uID/:eID', (req, res) => {
     query = eventQueries.getEvent;
     queryParams = req.params; // No deconstruction -> Assuming following ordered schema from Events table
 
@@ -139,16 +191,7 @@ app.post('/events/:eID/:uID', (req, res) => {
     })
 });
 
-app.get('/event/:eID/:uID', (req, res) => {
-    const { eID, uID } = req.params;
-    console.dir(`eID: ${eID}, uID: ${uID}`);
-    res.send(`eID: ${eID}, uID: ${uID}`);
-});
-
-app.post('/event', (req, res) => {
-    console.dir("Called event request...");
-    res.send('Mega Worm test');
-});
+//------------------------------------------------------------------
 
 app.listen(PORT, () => {
     console.log(`***Listening on port ${PORT}...`)
