@@ -148,6 +148,7 @@ CREATE TABLE FriendLookup (
 ----------------------------------------------------------------------------
 
 -- Display a certain event type
+delimiter //
 create procedure display_type()
 	begin
     
@@ -158,16 +159,55 @@ create procedure display_cal()
 	begin
     
     end;
-
--- Find the next meeting time (disregarding priority)
-create procedure is_available()
+    
+-- Find the next possible meeting time
+create procedure next_Time()
 	begin
     
     end;
+    
+-- Check the availability of all friends
+create procedure check_Friends()
+	begin
+    
+    end;
+    
+-- Determine whether a user is currently available at a given time
+create procedure is_Available(IN userID INT, IN currentTime DATETIME)
+	begin
+    declare isAvail BOOLEAN DEFAULT true;
+    IF is_DND(userID, currentTime) THEN
+		SET isAvail = false;
+	ELSEIF is_Event(userID, currentTime) THEN
+		SET isAvail = false;
+    SELECT @isAvail;
+    end;
+
+-- Determine whether a user is in DND hours
+-- ASSUMES DND HOURS BETWEEN MULTIPLE DAYS ARE TREATED AS TWO SEPARATE DND EVENTS
+-- NEED TO IMPLEMENT DAY OF WEEK SEARCH STILL
+create procedure is_DND(IN userID INT, IN currentTime DATETIME)
+	begin
+    DECLARE isQuiet BOOLEAN DEFAULT false;
+    IF (false) THEN
+		SET isQuiet false;
+	ELSEIF ((SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND
+			 startDate <= TIME(currentTime) AND endDate >= TIME(currentTime)) > 0) THEN
+		SET isQuiet true;
+    SELECT @isQuiet;
+    end;
+    
+-- Determine whether a user has a conflicting event
+create procedure is_Event(IN userID INT, IN currentTime DATETIME)
+	begin
+    declare isEv BOOLEAN DEFAULT false;
+    IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
+		SET isEv true;
+    SELECT @isEv;
+    end;
 
 -- Search for friends by username or email
-delimiter //
-create procedure friend_search(IN keyword varchar(128))
+create procedure friend_Search(IN keyword varchar(128))
 	begin
     select username
     from Users
@@ -176,8 +216,31 @@ create procedure friend_search(IN keyword varchar(128))
     end; //
     
 -- Create a user and their default calendar
-create procedure user_create(IN username varchar(100), IN password varchar(256), IN email varchar(256))
+create procedure user_Create(IN username varchar(100), IN password varchar(256), IN email varchar(256))
 	begin
     insert into Users values(username, password, email);
     insert into Calendars values(username);
+    CALL link_UserCal(username);
+    end;
+    
+-- Create a new calendar and link the creator's user ID to the calendar ID
+create procedure link_UserCal(IN uname varchar(100))
+	begin
+    declare userID INT DEFAULT 0;
+    declare calID INT DEFAULT 0;
+    select uID FROM Users WHERE username = uname INTO userID;
+    insert into Calendars values(uname);
+    select LAST_INSERT_ID() INTO calID;
+    insert into UserCalendarsLookup values(calID, userID);
+    end;
+    
+-- Insert new DND hours for a user
+create procedure create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur VARCHAR(7))
+	begin
+    IF (DATE(startTime) = DATE(endTime)) THEN
+		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), TIME(endTime), recur);
+	ELSE THEN
+		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), '23:59:59', recur);
+        INSERT INTO UserDoNotDisturbHoursLookup values('00:00:00', TIME(endTime), recur);
+		END IF;
     end;
