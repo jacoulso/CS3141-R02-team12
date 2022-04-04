@@ -212,12 +212,7 @@ create procedure is_DND(IN userID INT, IN currentTime DATETIME)
 -- Determine whether a user has a conflicting event
 create procedure is_Event(IN userID INT, IN currentTime DATETIME)
 	begin
-    end //
-
--- Find the next meeting time (disregarding priority)
-create procedure available()
-	begin
-    declare isEv BOOLEAN DEFAULT false;
+	declare isEv BOOLEAN DEFAULT false;
     IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
 		SET isEv = true;
 	END IF;
