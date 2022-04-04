@@ -56,14 +56,16 @@ app.get('/login/:userCred/:userPassword', async (req, res) => {
                         uID: results[0].uID,
                         username: results[0].username,
                         email: results[0].email
-                    }
+                    },
+                    successCode: true
                 }
                 console.log(`***${rjp.message} Found ${results.length} results.`);
                 res.send(rjp);
             } else {
                 const rjp = {
                     message: "Query ran successfully.",
-                    data: "Login attempt failed. Invalid password" // pass back query results
+                    data: "Login attempt failed. Invalid password", // pass back query results
+                    successCode: false
                 }
                 console.log(`***Failed login attempt for user ${userCred}.`);
                 res.send(rjp);

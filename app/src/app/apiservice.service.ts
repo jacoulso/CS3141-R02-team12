@@ -17,13 +17,11 @@ export class ApiserviceService {
 
   // login autherization
   getUserAuth(userCred: string, password: string): Observable<any> {
-    console.log(`req ==> '${userCred}', '${password}'`);
     return this._http.get(this.loginAuthPath + `/${userCred}/${password}`);
   }
 
   // Register a new user
   registerUser(userCred: string, password: string, email: string): Observable<any> {
-    console.log(`Creating user...`);
     return this._http.get(this.registerPath + `/${userCred}/${password}/${email}`);
   }
 }
