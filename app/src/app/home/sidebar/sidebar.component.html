@@ -33,12 +33,18 @@
             </a>
         </li>
         <li>
-
-            <a id="FriendsButton" class="btn" data-bs-toggle="modal"
-               data-bs-target="#friends-modal">
-                <i class="fas fa-user-friends"></i> <!--make sure to have it with i class, icons are nicerng ng  -->
+            <a id = "FriendsButton" class="btn" data-bs-toggle="collapse" data-bs-target="#friends-collapse">
+                <i class="fas fa-user-friends"></i>
                 Friends
             </a>
+            <div class="collapse show" id="friends-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <label>
+                        <input type="checkbox" name="colorCheckbox"
+                               value="C"> Future friend
+                    </label>
+                </ul>
+            </div>
         </li>
         <li>
             <a id="importButton" class="btn" data-bs-toggle="modal"

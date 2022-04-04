@@ -18,6 +18,13 @@ USE smartcal_mysqldb;
 
 SET FOREIGN_KEY_CHECKS = 0; -- Disable warnings while we kill everything
 
+-- Procedures
+DROP PROCEDURE IF EXISTS display_type;
+DROP PROCEDURE IF EXISTS display_cal;
+DROP PROCEDURE IF EXISTS available;
+DROP PROCEDURE IF EXISTS friend_search;
+DROP PROCEDURE IF EXISTS user_create;
+
 -- Lookups
 DROP TABLE IF EXISTS UserDoNotDisturbHoursLookup;
 DROP TABLE IF EXISTS UserCalendarsLookup;
@@ -90,6 +97,7 @@ CREATE TABLE PriorityLookup (
 -- stores a hexcode value without the leading #. #FFFFFF -> FFFFFF
 CREATE TABLE EventColorLookup (
     ecID INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
+        colorName VARCHAR(50) DEFAULT '',
     color VARCHAR(6) DEFAULT '000000' 
 );
 
@@ -145,32 +153,34 @@ CREATE TABLE FriendLookup (
     PRIMARY KEY (uID, friendID)
 );
 
+---------------------------------------------------------------------------- 
+--  PROCEDURES                                                            --
 ----------------------------------------------------------------------------
+delimiter //
 
 -- Display a certain event type
-delimiter //
 create procedure display_type()
 	begin
     
-    end;
+    end //
 
 -- Display all selected event types for a calendar
 create procedure display_cal()
 	begin
     
-    end;
+    end //
     
 -- Find the next possible meeting time
 create procedure next_Time()
 	begin
     
-    end;
+    end //
     
 -- Check the availability of all friends
 create procedure check_Friends()
 	begin
     
-    end;
+    end //
     
 -- Determine whether a user is currently available at a given time
 create procedure is_Available(IN userID INT, IN currentTime DATETIME)
@@ -181,7 +191,7 @@ create procedure is_Available(IN userID INT, IN currentTime DATETIME)
 	ELSEIF is_Event(userID, currentTime) THEN
 		SET isAvail = false;
     SELECT @isAvail;
-    end;
+    end //
 
 -- Determine whether a user is in DND hours
 -- ASSUMES DND HOURS BETWEEN MULTIPLE DAYS ARE TREATED AS TWO SEPARATE DND EVENTS
@@ -195,16 +205,20 @@ create procedure is_DND(IN userID INT, IN currentTime DATETIME)
 			 startDate <= TIME(currentTime) AND endDate >= TIME(currentTime)) > 0) THEN
 		SET isQuiet true;
     SELECT @isQuiet;
-    end;
+    end //
     
 -- Determine whether a user has a conflicting event
 create procedure is_Event(IN userID INT, IN currentTime DATETIME)
+    end //
+
+-- Find the next meeting time (disregarding priority)
+create procedure available()
 	begin
     declare isEv BOOLEAN DEFAULT false;
     IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
 		SET isEv true;
     SELECT @isEv;
-    end;
+    end //
 
 -- Search for friends by username or email
 create procedure friend_Search(IN keyword varchar(128))
@@ -213,26 +227,26 @@ create procedure friend_Search(IN keyword varchar(128))
     from Users
     where username like concat('%', @keyword, '%')
     or email like concat('%', @keyword, '%');
-    end; //
+    end //
     
 -- Create a user and their default calendar
-create procedure user_Create(IN username varchar(100), IN password varchar(256), IN email varchar(256))
+create procedure user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
 	begin
-    insert into Users values(username, password, email);
-    insert into Calendars values(username);
-    CALL link_UserCal(username);
-    end;
+    insert into Users values(newName, newPass, newMail);
+    insert into Calendars values(newName);
+    CALL link_UserCal(newName);
+    end //
     
 -- Create a new calendar and link the creator's user ID to the calendar ID
-create procedure link_UserCal(IN uname varchar(100))
+create procedure link_UserCal(IN newName varchar(100))
 	begin
     declare userID INT DEFAULT 0;
     declare calID INT DEFAULT 0;
-    select uID FROM Users WHERE username = uname INTO userID;
-    insert into Calendars values(uname);
+    select uID FROM Users WHERE username = newName INTO userID;
+    insert into Calendars values(newName);
     select LAST_INSERT_ID() INTO calID;
     insert into UserCalendarsLookup values(calID, userID);
-    end;
+    end //
     
 -- Insert new DND hours for a user
 create procedure create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur VARCHAR(7))
@@ -243,4 +257,34 @@ create procedure create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur
 		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), '23:59:59', recur);
         INSERT INTO UserDoNotDisturbHoursLookup values('00:00:00', TIME(endTime), recur);
 		END IF;
-    end;
+    end //
+
+
+---------------------------------------------------------------------------- 
+--  SEEDERS                                                               --
+----------------------------------------------------------------------------
+
+-- Fill our lookups so we can call other propogation procedures
+INSERT INTO EventTypeLookup (etID, typeName) VALUES 
+    (1,'Event'),
+    (2,'Reminder'),
+    (3,'Task')
+//
+
+INSERT INTO PriorityLookup (pID, priorityName) VALUES
+    (1,'Highest'),
+    (2,'High'),
+    (3,'Medium'),
+    (4,'Low'),
+    (5,'Lowest')
+//
+
+INSERT INTO EventColorLookup (ecID, colorName, color) VALUES 
+    (1,'Red','FF0000'),
+    (2,'Green','00FF00'),
+    (3,'Blue','0000FF')
+//
+
+-- Create a dummy user
+CALL user_create('jlmillim','worm','jlmillim@mtu.edu')	//
+

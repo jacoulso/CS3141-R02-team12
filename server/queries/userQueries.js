@@ -1,6 +1,6 @@
 const userQueries = {
     authenticateLogin: "SELECT uID, username, email FROM Users WHERE username=? AND password=?",
-    addLogin: "INSERT INTO Users " ,
+    signup: "CALL PROCEDURE user_create (?,?,?)",
     deleteLogin: ""
   };
   module.exports = userQueries;

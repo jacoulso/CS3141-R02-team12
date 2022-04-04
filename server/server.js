@@ -30,18 +30,32 @@ app.get('/', (req, res) => {
     res.send(`Node and express server running`)
 })
 
-// ---- Login --------------------------
-// app.get('/login', (req, res) => {
-//     const { username, password } = req.body;
-//     console.dir(`Attempted login with: userCred: ${userCred}`);
-//     res.send(`home/home`);
-// });
+// ---- User ---------------------------
 
-// app.post('/login', async (req, res) => {
-//     const {username, password} = req.body;
-//     const hash = await bycrpt.hash(password, 12);
-//     res.send(`home/home`);
-// });
+// User Login Authentication (Body parsing??), return [username, email] if valid, null if not
+app.get('/login', (req, res) => {
+    const { userCred, userPassword } = req.body;
+    query = userQueries.authenticateLogin;
+    queryParams = [userCred, userPassword];
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted login by user '${queryParams[0]}' query: '${query}'...`);
+
+    db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+        }
+
+        if (result != null) { // If we found something, send json packet
+            const rjp = {
+                message: "Query ran successfully.",
+                data: result // pass back query results
+            }
+            console.log(`***${rjp.message} Found ${result.length} results.`);
+            res.send(rjp);
+        }
+    })
+});
 
 // User Login Authentication, return [username, email] if valid, null if not
 app.get('/login/:userCred/:userPassword', (req, res) => {
@@ -68,19 +82,116 @@ app.get('/login/:userCred/:userPassword', (req, res) => {
     })
 });
 
+// User Signup, returns mySQL code if valid, null if not
+app.post('/signup', (req, res) => {
+    const { userCred, userPassword, userEmail } = req.body;
+
+    //convert password to hash here....
+
+    query = userQueries.signup;
+    queryParams = [userCred, userPassword, userEmail];
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted addUser: '${queryParams[0]}' with '${queryParams[2]}' query: '${query}'...`);
+
+    db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Insert ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
+});
+
 // ---- Calendars -----------------------
 
 // ---- Events --------------------------
-app.get('/event/:eID/:uID', (req, res) => {
-    const { eID, uID } = req.params;
-    console.dir(`eID: ${eID}, uID: ${uID}`);
-    res.send(`eID: ${eID}, uID: ${uID}`);
+
+// List all events from a user
+app.get('/events/:uID', (req, res) => {
+    const { uID } = req.params;
+    query = eventQueries.getAllEvents;
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted to get all events for user with ID: '${uID}.' Query: '${query}'...`);
+
+    db.query(query, uID, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Query ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
 });
 
-app.post('/event', (req, res) => {
-    console.dir("Called event request...");
-    res.send('Mega Worm test');
-})
+// List specific event from a user
+app.get('/events/:uID/:eID', (req, res) => {
+    const { eID, uID } = req.params;
+    query = eventQueries.getEvent;
+    queryParams = [eID, uID];
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted to get event with ID: '${queryParams[0]}' for user with ID: '${queryParams[1]}' query: '${query}'...`);
+
+    db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Query ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
+});
+
+// Create new Event for given user
+app.post('/events/:uID/:eID', (req, res) => {
+    query = eventQueries.getEvent;
+    queryParams = req.params; // No deconstruction -> Assuming following ordered schema from Events table
+
+    console.log(`***----------------------------------------------------------------`);
+    console.log(`***Attempted to get events for: '${queryParams[0]}' with '${queryParams[1]}' query: '${query}'...`);
+
+    db.query(query, queryParams, (err, result) => {
+        if (err) {
+            console.log(`*****${err}`);
+            res.send(err);
+        }
+
+        if (result != null) { 
+            const rjp = {
+                message: "Query ran successfully.",
+                data: result // pass back return code
+            }
+            console.log(`***${rjp.message}`);
+            res.send(rjp);
+        }
+    })
+});
+
+//------------------------------------------------------------------
 
 app.listen(PORT, () => {
     console.log(`***Listening on port ${PORT}...`)

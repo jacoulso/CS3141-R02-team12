@@ -6,14 +6,12 @@ import {CalendarCommonModule, CalendarModule, CalendarMonthModule, DateAdapter} 
 import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 import {SidebarComponent} from "./home/sidebar/sidebar.component";
 import { HeaderComponent } from './home/header/header.component';
-//import { ModalComponent } from './modal/modal.component';
 import { CalendarComponent } from './home/calendar/calendar.component';
-
+import { HttpClientModule } from '@angular/common/http';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ModalComponent } from './modal/modal.component'; // must go before plugins
-
-import { HttpClientModule } from '@angular/common/http';
 import { ApiserviceService } from './apiservice.service';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +19,9 @@ import { ApiserviceService } from './apiservice.service';
     routingComponents,
     SidebarComponent,
     HeaderComponent,
-    //ModalComponent,
     CalendarComponent,
-    ModalComponent
+    ModalComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +34,8 @@ import { ApiserviceService } from './apiservice.service';
     }),
     CalendarCommonModule,
     CalendarMonthModule,
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule
   ],
   providers: [ApiserviceService],
   bootstrap: [AppComponent]

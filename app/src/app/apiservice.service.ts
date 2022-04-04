@@ -15,6 +15,7 @@ export class ApiserviceService {
 
    // login autherization
    getUserAuth(userCred: string, password: string):Observable<any> {
+    console.log(`req ==> '${userCred}', '${password}'`);
     return this._http.get(this.loginAuthPath + `/${userCred}/${password}`);
   }
 }

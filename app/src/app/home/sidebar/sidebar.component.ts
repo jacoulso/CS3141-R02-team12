@@ -18,9 +18,17 @@ export class SidebarComponent implements OnInit {
       $('#sidebarExpand').on('click',function () {
         $('#sidebar').toggleClass('active');
       });
+      
 
     });
-    
+    $(document).ready(function() {
+      $('input[type="checkbox"]').on('click', function() {
+        let inputValue = $(this).attr("value");
+        $("." + inputValue).toggle();
+      });
+    });
+
   }
+  
 
 }

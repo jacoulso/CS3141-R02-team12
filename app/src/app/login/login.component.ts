@@ -10,12 +10,14 @@ export class LoginComponent implements OnInit {
 
   constructor(private service:ApiserviceService) { }
 
-  // TODO: remove hardcoded values for get body parsing
-  userCred = "jlmillim";
-  password = "worm";
+  ngOnInit(): void { }
 
-  ngOnInit(): void {
-    this.service.getUserAuth(this.userCred, this.password).subscribe( (res) => {
+  userLoginAuth(userCred: string, password: string): void {
+    
+    // Perform hashing here...
+    console.log(`req ==> '${userCred}', '${password}'`);
+
+    this.service.getUserAuth(userCred, password).subscribe( (res) => {
       console.log(res, "res==>")
     })
   }
