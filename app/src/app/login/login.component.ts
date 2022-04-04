@@ -13,13 +13,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   userLoginAuth(userCred: string, password: string): void {
-    
-    // Perform hashing here...
-    console.log(`req ==> '${userCred}', '${password}'`);
-
     this.service.getUserAuth(userCred, password).subscribe( (res) => {
       console.log(res, "res==>")
     })
   }
-  
 }
