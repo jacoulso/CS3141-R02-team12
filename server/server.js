@@ -76,7 +76,7 @@ app.get('/login/:userCred/:userPassword', async (req, res) => {
 });
 
 // User Signup, returns mySQL code if valid, null if not
-app.post('/signup/:userCred/:userPassword/:userEmail', async (req, res) => {
+app.get('/signup/:userCred/:userPassword/:userEmail', async (req, res) => {
     let { userCred, userPassword, userEmail } = req.params;
 
     // User Bcrypt to hash a password and save it with the db
@@ -91,13 +91,19 @@ app.post('/signup/:userCred/:userPassword/:userEmail', async (req, res) => {
     db.query(query, queryParams, async function (err, result) {
         if (err) {
             console.log(`*****${err}`);
-            res.send(err);
+            const rjp = {
+                message: "Error occured trying to insert user. Try again??",
+                data: null,
+                successCode: false
+            }
+            res.send(rjp);
         }
 
         if (result != null) {
             const rjp = {
                 message: "Insert ran successfully.",
-                data: result // pass back return code
+                data: result, // pass back return code
+                successCode: true
             }
             console.log(`***${rjp.message}`);
             res.send(rjp);

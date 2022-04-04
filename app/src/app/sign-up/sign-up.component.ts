@@ -1,4 +1,7 @@
+import { getLocalePluralCase } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import { ApiserviceService } from '../apiservice.service'; 
 
 @Component({
   selector: 'app-sign-up',
@@ -7,12 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service:ApiserviceService, private router:Router) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {} 
+
+  
+
+  // Attempt to register our user. reroutes to login if successful
+  registerUser(userCred: string, password: string, email: string): void {
+    this.service.registerUser(userCred, password, email).subscribe(  (res) => {
+      goPlaces(this.router); 
+    })
   }
 
 }
+
+function goPlaces(router: Router) {
+  router.navigate(['/', 'login']);
+}
+
 (function() {
   'use strict';
   window.addEventListener('load', function() {

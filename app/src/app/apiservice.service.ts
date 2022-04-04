@@ -12,7 +12,8 @@ export class ApiserviceService {
   // connect frontend to backend 
   apiUrl = "http://localhost:3000";
   loginAuthPath = this.apiUrl + "/login";
-  registerPath = this.apiUrl + "/singup";
+  registerPath = this.apiUrl + "/signup";
+  eventPath = this.apiUrl + "/events"
 
   // login autherization
   getUserAuth(userCred: string, password: string): Observable<any> {
