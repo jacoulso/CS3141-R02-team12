@@ -190,6 +190,7 @@ create procedure is_Available(IN userID INT, IN currentTime DATETIME)
 		SET isAvail = false;
 	ELSEIF is_Event(userID, currentTime) THEN
 		SET isAvail = false;
+	END IF;
     SELECT @isAvail;
     end //
 
@@ -200,15 +201,17 @@ create procedure is_DND(IN userID INT, IN currentTime DATETIME)
 	begin
     DECLARE isQuiet BOOLEAN DEFAULT false;
     IF (false) THEN
-		SET isQuiet false;
+		SET isQuiet = false;
 	ELSEIF ((SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND
 			 startDate <= TIME(currentTime) AND endDate >= TIME(currentTime)) > 0) THEN
-		SET isQuiet true;
+		SET isQuiet = true;
+	END IF;
     SELECT @isQuiet;
     end //
     
 -- Determine whether a user has a conflicting event
 create procedure is_Event(IN userID INT, IN currentTime DATETIME)
+	begin
     end //
 
 -- Find the next meeting time (disregarding priority)
@@ -216,7 +219,8 @@ create procedure available()
 	begin
     declare isEv BOOLEAN DEFAULT false;
     IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
-		SET isEv true;
+		SET isEv = true;
+	END IF;
     SELECT @isEv;
     end //
 
@@ -253,10 +257,10 @@ create procedure create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur
 	begin
     IF (DATE(startTime) = DATE(endTime)) THEN
 		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), TIME(endTime), recur);
-	ELSE THEN
+	ELSE
 		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), '23:59:59', recur);
         INSERT INTO UserDoNotDisturbHoursLookup values('00:00:00', TIME(endTime), recur);
-		END IF;
+	END IF;
     end //
 
 
