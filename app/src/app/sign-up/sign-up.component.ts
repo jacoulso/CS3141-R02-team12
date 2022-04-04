@@ -1,4 +1,3 @@
-import { getLocalePluralCase } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { ApiserviceService } from '../apiservice.service'; 
