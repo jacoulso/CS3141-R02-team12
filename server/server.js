@@ -10,6 +10,7 @@ const eventQueries = require('./queries/eventQueries');
 
 // ---- Config -------------------------
 const db = mysql.createConnection(config.db);
+const saltRounds = 13; // ~20 hashes/s
 
 db.connect((error) => {
     if (error) console.log(`Error connecting to ${config.db.database}: ${error}`);
@@ -32,75 +33,68 @@ app.get('/', (req, res) => {
 
 // ---- User ---------------------------
 
-// User Login Authentication (Body parsing??), return [username, email] if valid, null if not
-app.get('/login', (req, res) => {
-    const { userCred, userPassword } = req.body;
-    query = userQueries.authenticateLogin;
-    queryParams = [userCred, userPassword];
-
-    console.log(`***----------------------------------------------------------------`);
-    console.log(`***Attempted login by user '${queryParams[0]}' query: '${query}'...`);
-
-    db.query(query, queryParams, (err, result) => {
-        if (err) {
-            console.log(`*****${err}`);
-        }
-
-        if (result != null) { // If we found something, send json packet
-            const rjp = {
-                message: "Query ran successfully.",
-                data: result // pass back query results
-            }
-            console.log(`***${rjp.message} Found ${result.length} results.`);
-            res.send(rjp);
-        }
-    })
-});
-
 // User Login Authentication, return [username, email] if valid, null if not
-app.get('/login/:userCred/:userPassword', (req, res) => {
+app.get('/login/:userCred/:userPassword', async (req, res) => {
     const { userCred, userPassword } = req.params;
     query = userQueries.authenticateLogin;
-    queryParams = [userCred, userPassword];
+    queryParams = [userCred];
 
-    console.log(`***----------------------------------------------------------------`);
     console.log(`***Attempted login by user '${queryParams[0]}' query: '${query}'...`);
 
-    db.query(query, queryParams, (err, result) => {
-        if (err) {
-            console.log(`*****${err}`);
-        }
 
-        if (result != null) { // If we found something, send json packet
-            const rjp = {
-                message: "Query ran successfully.",
-                data: result // pass back query results
+    let result = db.query(query, queryParams, async function (err, results) {
+        if (err) { console.log(`*****${err}`); }
+
+        if (result != null) { // If we found something, attempt to send json packet
+            const comp = await bcrpyt.compare(userPassword, results[0].password);
+            const c = results[0].password;
+            console.log(`entered: '${userPassword}', actual: '${c}', comparison: ${comp}`);
+            if (comp) {
+                const rjp = {
+                    message: "Query ran successfully.",
+                    data: {
+                        uID: results[0].uID,
+                        username: results[0].username,
+                        email: results[0].email
+                    }
+                }
+                console.log(`***${rjp.message} Found ${results.length} results.`);
+                res.send(rjp);
+            } else {
+                const rjp = {
+                    message: "Query ran successfully.",
+                    data: "Login attempt failed. Invalid password" // pass back query results
+                }
+                console.log(`***Failed login attempt for user ${userCred}.`);
+                res.send(rjp);
             }
-            console.log(`***${rjp.message} Found ${result.length} results.`);
-            res.send(rjp);
+
         }
-    })
+    });
+
+
 });
 
 // User Signup, returns mySQL code if valid, null if not
-app.post('/signup', (req, res) => {
-    const { userCred, userPassword, userEmail } = req.body;
+app.post('/signup/:userCred/:userPassword/:userEmail', async (req, res) => {
+    let { userCred, userPassword, userEmail } = req.params;
 
-    //convert password to hash here....
+    // User Bcrypt to hash a password and save it with the db
+    const salt = await bcrpyt.genSalt(saltRounds); // ~20 hashes/s
+    userPassword = await bcrpyt.hash(userPassword, salt);
 
     query = userQueries.signup;
     queryParams = [userCred, userPassword, userEmail];
 
-    console.log(`***----------------------------------------------------------------`);
     console.log(`***Attempted addUser: '${queryParams[0]}' with '${queryParams[2]}' query: '${query}'...`);
 
-    db.query(query, queryParams, (err, result) => {
+    db.query(query, queryParams, async function (err, result) {
         if (err) {
             console.log(`*****${err}`);
             res.send(err);
         }
 
-        if (result != null) { 
+        if (result != null) {
             const rjp = {
                 message: "Insert ran successfully.",
                 data: result // pass back return code
@@ -120,7 +114,6 @@ app.get('/events/:uID', (req, res) => {
     const { uID } = req.params;
     query = eventQueries.getAllEvents;
 
-    console.log(`***----------------------------------------------------------------`);
     console.log(`***Attempted to get all events for user with ID: '${uID}.' Query: '${query}'...`);
 
     db.query(query, uID, (err, result) => {
@@ -129,7 +122,7 @@ app.get('/events/:uID', (req, res) => {
             res.send(err);
         }
 
-        if (result != null) { 
+        if (result != null) {
             const rjp = {
                 message: "Query ran successfully.",
                 data: result // pass back return code
@@ -146,7 +139,6 @@ app.get('/events/:uID/:eID', (req, res) => {
     query = eventQueries.getEvent;
     queryParams = [eID, uID];
 
-    console.log(`***----------------------------------------------------------------`);
     console.log(`***Attempted to get event with ID: '${queryParams[0]}' for user with ID: '${queryParams[1]}' query: '${query}'...`);
 
     db.query(query, queryParams, (err, result) => {
@@ -155,7 +147,7 @@ app.get('/events/:uID/:eID', (req, res) => {
             res.send(err);
         }
 
-        if (result != null) { 
+        if (result != null) {
             const rjp = {
                 message: "Query ran successfully.",
                 data: result // pass back return code
@@ -171,7 +163,6 @@ app.post('/events/:uID/:eID', (req, res) => {
     query = eventQueries.getEvent;
     queryParams = req.params; // No deconstruction -> Assuming following ordered schema from Events table
 
-    console.log(`***----------------------------------------------------------------`);
     console.log(`***Attempted to get events for: '${queryParams[0]}' with '${queryParams[1]}' query: '${query}'...`);
 
     db.query(query, queryParams, (err, result) => {
@@ -180,7 +171,7 @@ app.post('/events/:uID/:eID', (req, res) => {
             res.send(err);
         }
 
-        if (result != null) { 
+        if (result != null) {
             const rjp = {
                 message: "Query ran successfully.",
                 data: result // pass back return code
