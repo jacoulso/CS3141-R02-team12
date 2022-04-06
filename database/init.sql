@@ -159,104 +159,115 @@ CREATE TABLE FriendLookup (
 delimiter //
 
 -- Display a certain event type
-create procedure display_type()
-	begin
+CREATE PROCEDURE display_type()
+	BEGIN
     
-    end //
+    END //
 
 -- Display all selected event types for a calendar
-create procedure display_cal()
-	begin
+CREATE PROCEDURE display_cal()
+	BEGIN
     
-    end //
+    END //
     
 -- Find the next possible meeting time
-create procedure next_Time()
-	begin
+CREATE PROCEDURE next_Time()
+	BEGIN
     
-    end //
+    END //
     
 -- Check the availability of all friends
-create procedure check_Friends()
-	begin
+CREATE PROCEDURE check_Friends()
+	BEGIN
     
-    end //
+    END //
     
 -- Determine whether a user is currently available at a given time
-create procedure is_Available(IN userID INT, IN currentTime DATETIME)
-	begin
-    declare isAvail BOOLEAN DEFAULT true;
-    IF is_DND(userID, currentTime) THEN
-		SET isAvail = false;
-	ELSEIF is_Event(userID, currentTime) THEN
+CREATE PROCEDURE is_Available(IN userID INT, IN currentTime DATETIME, INOUT isAvail BOOLEAN)
+	BEGIN
+    DECLARE isDND BOOLEAN DEFAULT false;
+    DECLARE isEvent BOOLEAN DEFAULT false;
+    CALL is_DND(userID, currentTime, isDND);
+    CALL is_Event(userID, currentTime, isEvent);
+    IF (isDND | isEvent) THEN
 		SET isAvail = false;
 	END IF;
-    SELECT @isAvail;
-    end //
+    END //
 
 -- Determine whether a user is in DND hours
 -- ASSUMES DND HOURS BETWEEN MULTIPLE DAYS ARE TREATED AS TWO SEPARATE DND EVENTS
 -- NEED TO IMPLEMENT DAY OF WEEK SEARCH STILL
-create procedure is_DND(IN userID INT, IN currentTime DATETIME)
-	begin
-    DECLARE isQuiet BOOLEAN DEFAULT false;
-    IF (false) THEN
-		SET isQuiet = false;
+CREATE PROCEDURE is_DND(IN userID INT, IN currentTime DATETIME, INOUT isDND BOOLEAN)
+	BEGIN
+    DECLARE dayWeek CHAR(1) DEFAULT dayofweek(DATE(currentTime));
+    CALL day_Convert(dayWeek);
+    IF (SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND recurrence LIKE concat('%', @dayWeek, '%')) THEN
+		SET isDND = false;
 	ELSEIF ((SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND
 			 startDate <= TIME(currentTime) AND endDate >= TIME(currentTime)) > 0) THEN
-		SET isQuiet = true;
+		SET isDND = true;
 	END IF;
-    SELECT @isQuiet;
-    end //
+    END //
     
 -- Determine whether a user has a conflicting event
-create procedure is_Event(IN userID INT, IN currentTime DATETIME)
-	begin
-	declare isEv BOOLEAN DEFAULT false;
+CREATE PROCEDURE is_Event(IN userID INT, IN currentTime DATETIME, INOUT isEvent BOOLEAN)
+	BEGIN
     IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
-		SET isEv = true;
+		SET isEvent = true;
+	ELSE
+		SET isEvent = false;
 	END IF;
-    SELECT @isEv;
-    end //
+    END //
 
 -- Search for friends by username or email
-create procedure friend_Search(IN keyword varchar(128))
-	begin
-    select username
-    from Users
-    where username like concat('%', @keyword, '%')
-    or email like concat('%', @keyword, '%');
-    end //
+CREATE PROCEDURE friend_Search(IN keyword varchar(128))
+	BEGIN
+    SELECT username FROM Users WHERE username LIKE concat('%', @keyword, '%') OR email LIKE concat('%', @keyword, '%');
+    END //
     
 -- Create a user and their default calendar
-create procedure user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
-	begin
-    insert into Users values(newName, newPass, newMail);
-    insert into Calendars values(newName);
+CREATE PROCEDURE user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
+	BEGIN
+    INSERT INTO Users values(newName, newPass, newMail);
+    INSERT INTO Calendars values(newName);
     CALL link_UserCal(newName);
-    end //
+    END //
     
 -- Create a new calendar and link the creator's user ID to the calendar ID
-create procedure link_UserCal(IN newName varchar(100))
-	begin
-    declare userID INT DEFAULT 0;
-    declare calID INT DEFAULT 0;
-    select uID FROM Users WHERE username = newName INTO userID;
-    insert into Calendars values(newName);
-    select LAST_INSERT_ID() INTO calID;
-    insert into UserCalendarsLookup values(calID, userID);
-    end //
+CREATE PROCEDURE link_UserCal(IN newName varchar(100))
+	BEGIN
+    DECLARE userID INT DEFAULT 0;
+    DECLARE calID INT DEFAULT 0;
+    SELECT uID FROM Users WHERE username = newName INTO userID;
+    INSERT INTO Calendars values(newName);
+    SELECT LAST_INSERT_ID() INTO calID;
+    INSERT INTO UserCalendarsLookup values(calID, userID);
+    END //
     
 -- Insert new DND hours for a user
-create procedure create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur VARCHAR(7))
-	begin
+CREATE PROCEDURE create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur VARCHAR(7))
+	BEGIN
     IF (DATE(startTime) = DATE(endTime)) THEN
 		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), TIME(endTime), recur);
 	ELSE
 		INSERT INTO UserDoNotDisturbHoursLookup values(TIME(startTime), '23:59:59', recur);
         INSERT INTO UserDoNotDisturbHoursLookup values('00:00:00', TIME(endTime), recur);
 	END IF;
-    end //
+    END //
+    
+-- Convert day of week number to corresponding character
+CREATE PROCEDURE day_Convert(INOUT dayWeek CHAR(1))
+	BEGIN
+    CASE
+		WHEN dayWeek = '1' THEN SET dayWeek = 'U';
+        WHEN dayWeek = '2' THEN SET dayWeek = 'M';
+		WHEN dayWeek = '3' THEN SET dayWeek = 'T';
+        WHEN dayWeek = '4' THEN SET dayWeek = 'W';
+        WHEN dayWeek = '5' THEN SET dayWeek = 'R';
+        WHEN dayWeek = '6' THEN SET dayWeek = 'F';
+        ELSE SET dayWeek = 'S';
+	END CASE;
+    END //
 
 
 ---------------------------------------------------------------------------- 
