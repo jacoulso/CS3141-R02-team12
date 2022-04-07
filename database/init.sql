@@ -21,9 +21,16 @@ SET FOREIGN_KEY_CHECKS = 0; -- Disable warnings while we kill everything
 -- Procedures
 DROP PROCEDURE IF EXISTS display_type;
 DROP PROCEDURE IF EXISTS display_cal;
-DROP PROCEDURE IF EXISTS available;
+DROP PROCEDURE IF EXISTS is_available;
 DROP PROCEDURE IF EXISTS friend_search;
 DROP PROCEDURE IF EXISTS user_create;
+DROP PROCEDURE IF EXISTS next_time;
+DROP PROCEDURE IF EXISTS check_friends;
+DROP PROCEDURE IF EXISTS create_DND;
+DROP PROCEDURE IF EXISTS day_Convert;
+DROP PROCEDURE IF EXISTS is_DND;
+DROP PROCEDURE IF EXISTS is_Event;
+DROP PROCEDURE IF EXISTS link_UserCal;
 
 -- Lookups
 DROP TABLE IF EXISTS UserDoNotDisturbHoursLookup;
@@ -228,8 +235,7 @@ CREATE PROCEDURE friend_Search(IN keyword varchar(128))
 -- Create a user and their default calendar
 CREATE PROCEDURE user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
 	BEGIN
-    INSERT INTO Users values(newName, newPass, newMail);
-    INSERT INTO Calendars values(newName);
+    INSERT INTO Users (username, password, email) values(newName, newPass, newMail);
     CALL link_UserCal(newName);
     END //
     
@@ -239,7 +245,7 @@ CREATE PROCEDURE link_UserCal(IN newName varchar(100))
     DECLARE userID INT DEFAULT 0;
     DECLARE calID INT DEFAULT 0;
     SELECT uID FROM Users WHERE username = newName INTO userID;
-    INSERT INTO Calendars values(newName);
+    INSERT INTO Calendars (title) values(newName);
     SELECT LAST_INSERT_ID() INTO calID;
     INSERT INTO UserCalendarsLookup values(calID, userID);
     END //
