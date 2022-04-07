@@ -300,7 +300,3 @@ INSERT INTO EventColorLookup (ecID, colorName, color) VALUES
     (2,'Green','00FF00'),
     (3,'Blue','0000FF')
 //
-
--- Create a dummy user
-CALL user_create('jlmillim','worm','jlmillim@mtu.edu')	//
-
