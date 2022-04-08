@@ -20,18 +20,21 @@
                     <label style="color:black"><strong>Enter a Title:</strong></label><br>
                     <input type="text" id="title">
                     <br>
-                    <label style="color:black"><strong>Start: </strong></label> <br>
+                    <label style="color:black"><strong>Priority:</strong> 1: High - 5: Low </label><br>
+                    <input type="number" id="priority" min="1" max="5"><br>
+                    <label for="allDay" style="color:black"><strong> All Day: </strong></label>
+                    <input type="checkbox" id="allDay"><br>
+                    <label style="color:black"><strong>Start: </strong></label><br>
                     <input type="datetime-local" id="start"><br>
-                    <label style="color:black"><strong>End: </strong></label> <br>
+                    <label style="color:black"><strong>End: </strong></label><br>
                     <input type="datetime-local" id="end">
                 </form>
-                
+
             </div>
 
             <!-- footer of the modal -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="example-modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="getNewEvent()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="getNewEvent()">Add Event</button>
             </div>
         </div>
     </div>
@@ -43,7 +46,7 @@
      aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
-            
+
             <!--Header of the modal -->
             <div class="modal-header">
                 <h5 class="modal-title" id="Label2">Modal title</h5>
@@ -51,12 +54,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+
             <!-- Body of the modal -->
             <div class="modal-body">
                 ...
             </div>
-            
+
             <!-- footer of the modal -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="example-modal">Close</button>
@@ -74,7 +77,7 @@
 
             <!--Header of the modal -->
             <div class="modal-header">
-                <h5 class="modal-title" id="Label3">Modal title</h5>
+                <h5 class="modal-title" id="Label3" style="color:black">Import Calendar</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -82,13 +85,14 @@
 
             <!-- Body of the modal -->
             <div class="modal-body">
-                <label style="color:black">Enter public ical url:   </label>
-                <input type="url" id="myfile" name="myfile">
+                <form id="importForm"><label style="color:black"><strong>Enter public ical url:</strong></label><br>
+                    <input type="url" id="myfile" name="myfile"></form>
+
             </div>
 
             <!-- footer of the modal -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" (click)="getICS()">Submit</button>
             </div>
         </div>
     </div>
@@ -137,7 +141,7 @@
             <!-- Body of the modal -->
             <div class="modal-body">
                 <div class="text-center">
-                    
+
                     <div class="faq-body">
                         <p>You can find us using these links:</p>
                     </div>
@@ -157,7 +161,7 @@
                      class="fas fa-discord"> <a
                         href="https://discord.gg/yQ5Ymgh">: Discord</a>
                 </div>
-                
+
             </div>
 
             <!-- footer of the modal -->
