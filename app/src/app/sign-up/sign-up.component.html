@@ -21,49 +21,48 @@
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
                         <div class="card-body p-5 text-center">
+                            <form [formGroup]="registerForm" (ngSubmit)="register()">
+                                <div class="mb-md-5 mt-md-4 pb-5">
 
-                            <div class="mb-md-5 mt-md-4 pb-5">
-
-                                <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
-                                <p class="text-white-50">Please create an username and password!</p>
-                                <p class="text-white-50 mb-5">You will be redirected to the login after signing up.</p>
-                                    <p>
-                                    <div class="form-outline form-white mb-4">
-                                        <input type="username" id="typeUsernameX" class="form-control form-control-lg " #userCred/>
-                                        <label class="form-label" for="typeUsernameX">Username</label>
-                                    </div>
-                                    <p>
-                                    <p>
-                                    <div class="form-outline form-white mb-4">
-                                        <input type="email" id="typeEmailX" class="form-control form-control-lg " #userEmail/>
-                                        <label class="form-label" for="typeEmailX">Email</label>
-                                    </div>
-                                    <p>
-                                    <div class="form-outline form-blue mb-4">
-                                        <input name=up type="password" id="typePasswordX" #userPassword
-                                            class="form-control form-control-lg" 
-                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
-                                        <label class="form-label" for="typePasswordX">Password</label>
-                                        <div class="invalid-feedback">
-                                            Passwords do not match!
+                                    <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
+                                    <p class="text-white-50">Please create an username and password!</p>
+                                    <p class="text-white-50 mb-5">You will be redirected to the login after signing up.</p>
+                                        <p>
+                                        <div class="form-outline form-white mb-4">
+                                            <input type="username" id="typeUsernameX" class="form-control form-control-lg " formControlName="username"/>
+                                            <label class="form-label" for="typeUsernameX">Username</label>
                                         </div>
-                                    </div>
-                                    <p>
-                                    <div class="form-outline form-blue mb-4">
-                                        <input name=up2 type="password" id="confirmPassword"
-                                            class="form-control form-control-lg" 
-                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
-                                        <label class="form-label" for="confirmPassword">Confirm Password</label>
-                                        <div class="invalid-feedback">
-                                            Passwords do not match!
+                                        <p>
+                                        <p>
+                                        <div class="form-outline form-white mb-4">
+                                            <input type="email" id="typeEmailX" class="form-control form-control-lg " formControlName="email"/>
+                                            <label class="form-label" for="typeEmailX">Email</label>
                                         </div>
-                                    </div>
-                                    <p>
-                                        <input class="btn btn-outline-light btn-lg px-5" type="submit"
-                                            value="Create account!" (click)="registerUser(userCred.value, userPassword.value, userEmail.value)">
-                                        <a routerLink="/login" routerLinkActive="active"> </a>
-                            </div>
-
+                                        <p>
+                                        <div class="form-outline form-blue mb-4">
+                                            <input name=up type="password" id="typePasswordX" formControlName="password"
+                                                class="form-control form-control-lg" 
+                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
+                                            <label class="form-label" for="typePasswordX">Password</label>
+                                            <div class="invalid-feedback">
+                                                Passwords do not match!
+                                            </div>
+                                        </div>
+                                        <p>
+                                        <div class="form-outline form-blue mb-4">
+                                            <input name=up2 type="password" id="confirmPassword" formControlName="confirmPassword"
+                                                class="form-control form-control-lg" 
+                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
+                                            <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                            <div class="invalid-feedback">
+                                                Passwords do not match!
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <input class="btn btn-outline-light btn-lg px-5" type="submit" value="Create account!"/>
+                                            <a routerLink="/login" routerLinkActive="active"> </a>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

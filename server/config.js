@@ -8,5 +8,9 @@ const config = {
       password: `notasecret`,
       database: `smartcal_mysqldb`
     },
+    jwt: {
+      saltRounds: 13,  // ~20 hashes/s
+      secret: 'megaWorm' // key for signing outgoing tokens
+    }
   };
   module.exports = config;

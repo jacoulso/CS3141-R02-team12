@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiserviceService } from '../apiservice.service'; 
 
 @Component({
@@ -9,23 +10,37 @@ import { ApiserviceService } from '../apiservice.service';
 })
 export class SignUpComponent implements OnInit {
 
-  constructor(private service:ApiserviceService, private router:Router) { }
+  constructor(private service:ApiserviceService, private fb: FormBuilder,  private router:Router) { }
 
-  ngOnInit(): void {} 
+  ngOnInit(): void {
+    this.initForm();
+  } 
 
+  registerForm!: FormGroup;
+  errors: any = [];
   
-
-  // Attempt to register our user. reroutes to login if successful
-  registerUser(userCred: string, password: string, email: string): void {
-    this.service.registerUser(userCred, password, email).subscribe(  (res) => {
-      goPlaces(this.router); 
-    })
+  // send user register information to the server and go back to the login page
+  register(): void {
+    this.errors = [];
+    this.service.register(this.registerForm.value)
+      .subscribe(() => {
+        this.router.navigate(['/login'], { queryParams: { registered: 'success' } });
+       },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error); // notice how we never ever look at this array C;
+        });
   }
 
-}
+  // build up our form
+  initForm(): void {
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required], 
+      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')] ], // I am aware of how gross regex stuff is
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
+    });
+  }
 
-function goPlaces(router: Router) {
-  router.navigate(['/', 'login']);
 }
 
 (function() {

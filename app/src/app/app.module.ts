@@ -12,6 +12,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { ModalComponent } from './modal/modal.component'; // must go before plugins
 import { ApiserviceService } from './apiservice.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     CalendarCommonModule,
     CalendarMonthModule,
     FullCalendarModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [ApiserviceService],
   bootstrap: [AppComponent]
