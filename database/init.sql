@@ -160,6 +160,16 @@ CREATE TABLE FriendLookup (
     PRIMARY KEY (uID, friendID)
 );
 
+-- Create an empty friend lookup table for use by the check_Friends procedure
+CREATE TABLE UserFriends (
+	friendID INT,
+    friendNum INT NOT NULL UNIQUE AUTO_INCREMENT,
+    
+    FOREIGN KEY (friendID) REFERENCES Users(uID) ON DELETE CASCADE,
+    
+    PRIMARY KEY (friendID, friendNum)
+);
+
 ---------------------------------------------------------------------------- 
 --  PROCEDURES                                                            --
 ----------------------------------------------------------------------------
@@ -178,15 +188,36 @@ CREATE PROCEDURE display_cal()
     END //
     
 -- Find the next possible meeting time
-CREATE PROCEDURE next_Time()
+CREATE PROCEDURE next_Time(IN userID INT, IN currentTime DATETIME, IN includeFriends BOOLEAN)
 	BEGIN
+    DECLARE allAvail BOOLEAN DEFAULT true;
     
     END //
     
--- Check the availability of all friends
-CREATE PROCEDURE check_Friends()
+-- Check the availability of the user and optionally all their friends
+CREATE PROCEDURE check_All(IN userID INT, IN currentTime DATETIME, IN includeFriends BOOLEAN, INOUT allAvail BOOLEAN)
 	BEGIN
-    
+    DECLARE isAvail BOOLEAN DEFAULT true;
+    DECLARE nextFriend INT DEFAULT 0;
+    DECLARE numFriends INT DEFAULT 0;
+    CALL is_Available(userID, currentTime, isAvail);
+    IF (includeFriends & isAvail) THEN
+		SELECT count(*) INTO numFriends FROM FriendLookup WHERE uID = userID;
+		SELECT * INTO UserFriends FROM FriendLookup WHERE uID = userID;
+		nextFriend: LOOP
+			SET nextFriend = nextFriend + 1;
+			IF (nextFriend < numFriends) THEN
+				CALL is_Available((SELECT friendID FROM UserFriends WHERE friendNum = nextFriend), currentTime, isAvail);
+				IF (isAvail) THEN
+					ITERATE nextFriend;
+				END IF;
+			END IF;
+			LEAVE nextFriend;
+		END LOOP;
+	END IF;
+    DELETE FROM UserFriends;
+    ALTER TABLE UserFriends AUTO_INCREMENT = 1;
+    SET allAvail = isAvail;
     END //
     
 -- Determine whether a user is currently available at a given time
@@ -261,7 +292,7 @@ CREATE PROCEDURE create_DND(IN startTime DATETIME, IN endTime DATETIME, IN recur
 	END IF;
     END //
     
--- Convert day of week number to corresponding character
+-- Convert a day of week number to its corresponding Unicode character
 CREATE PROCEDURE day_Convert(INOUT dayWeek CHAR(1))
 	BEGIN
     CASE
