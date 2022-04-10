@@ -2,73 +2,104 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>SmartCalendar - Sign Up</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="sign-up.component.css" rel="stylesheet" />
+    <link href="sign-up.component.scss" rel="stylesheet"/>
+
 </head>
 
 <body>
-    <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
-                            <form [formGroup]="registerForm" (ngSubmit)="register()">
-                                <div class="mb-md-5 mt-md-4 pb-5">
-
-                                    <h2 class="fw-bold mb-2 text-uppercase">Sign Up</h2>
-                                    <p class="text-white-50">Please create an username and password!</p>
-                                    <p class="text-white-50 mb-5">You will be redirected to the login after signing up.</p>
-                                        <p>
-                                        <div class="form-outline form-white mb-4">
-                                            <input type="username" id="typeUsernameX" class="form-control form-control-lg " formControlName="username"/>
-                                            <label class="form-label" for="typeUsernameX">Username</label>
-                                        </div>
-                                        <p>
-                                        <p>
-                                        <div class="form-outline form-white mb-4">
-                                            <input type="email" id="typeEmailX" class="form-control form-control-lg " formControlName="email"/>
-                                            <label class="form-label" for="typeEmailX">Email</label>
-                                        </div>
-                                        <p>
-                                        <div class="form-outline form-blue mb-4">
-                                            <input name=up type="password" id="typePasswordX" formControlName="password"
-                                                class="form-control form-control-lg" 
-                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
-                                            <label class="form-label" for="typePasswordX">Password</label>
-                                            <div class="invalid-feedback">
-                                                Passwords do not match!
-                                            </div>
-                                        </div>
-                                        <p>
-                                        <div class="form-outline form-blue mb-4">
-                                            <input name=up2 type="password" id="confirmPassword" formControlName="confirmPassword"
-                                                class="form-control form-control-lg" 
-                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
-                                            <label class="form-label" for="confirmPassword">Confirm Password</label>
-                                            <div class="invalid-feedback">
-                                                Passwords do not match!
-                                            </div>
-                                        </div>
-                                        <p>
-                                            <input class="btn btn-outline-light btn-lg px-5" type="submit" value="Create account!"/>
-                                            <a routerLink="/login" routerLinkActive="active"> </a>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="card bg-dark text-white" style="border-radius: 1rem; width: 50%">
+                <div class="card-body text-center">
+                    <form [formGroup]="validationForm">
+                        <h3>Sign Up</h3>
+                        <br>
+                        <p class="text-white-50">Please create an username and password!</p>
+                        <p class="text-white-50 mb-5">You will be redirected to the login after signing up.</p>
+                        <mdb-form-control>
+                            <input mdbInput
+                                   mdbValidate
+                                   required
+                                   type="text"
+                                   id="form1"
+                                   class="form-control"
+                                   formControlName="username"
+                            >
+                            <label mdbLabel class="form-label text-muted" for="form1">Username</label>
+                            <mdb-error
+                                    *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+                                Username is required!
+                            </mdb-error>
+                        </mdb-form-control>
+                        <br>
+                        <!-- Email input -->
+                        <mdb-form-control>
+                            <input mdbInput
+                                   mdbValidate
+                                   required
+                                   type="email"
+                                   id="form2"
+                                   class="form-control"
+                                   formControlName="email"
+                            >
+                            <label mdbLabel class="form-label text-muted" for="form2">Email Address</label>
+                            <mdb-error
+                                    *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+                                Email is required!
+                            </mdb-error>
+                        </mdb-form-control>
+                        <br>
+                        <!-- Password input -->
+                        <mdb-form-control>
+                            <input mdbInput
+                                   mdbValidate
+                                   required
+                                   name="input"
+                                   type="password"
+                                   id="form3"
+                                   class="form-control"
+                                   formControlName="password">
+                            <label mdbLabel class="form-label text-muted" for="form3">Password</label>
+                            <mdb-error
+                                    *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+                                Password must contain!
+                            </mdb-error>
+                        </mdb-form-control>
+                        <br>
+                        <mdb-form-control>
+                            <input mdbInput
+                                   mdbValidate
+                                   required
+                                   type="password"
+                                   id="form4"
+                                   class="form-control"
+                                   formControlName="cPassword"
+                            >
+                            <label mdbLabel class="form-label text-muted" for="form4">Confirm Password</label>
+                            <mdb-error
+                                    *ngIf="password?.get==cPassword?.get(validationForm.value)">
+                                Passwords Do Not Match!!
+                            </mdb-error>
+                        </mdb-form-control>
+                        <br>
+                        <!-- Submit button -->
+                        <input type="submit" class="btn btn-primary btn-block mb-4" value="Create Account!"/>
+                        <a routerLink="/login" routerLinkActive="active"></a>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 
 </html>

@@ -13,6 +13,8 @@ import { ModalComponent } from './modal/modal.component'; // must go before plug
 import { ApiserviceService } from './apiservice.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
+import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
 
 @NgModule({
   declarations: [
@@ -24,22 +26,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ModalComponent,
     SignUpComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    CalendarModule,
-    AppRoutingModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    CalendarCommonModule,
-    CalendarMonthModule,
-    FullCalendarModule,
-    HttpClientModule,
-    FormsModule, 
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        CalendarModule,
+        AppRoutingModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+        CalendarCommonModule,
+        CalendarMonthModule,
+        FullCalendarModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MdbFormsModule,
+        MdbValidationModule,
+    ],
   providers: [ApiserviceService],
   bootstrap: [AppComponent]
 })
