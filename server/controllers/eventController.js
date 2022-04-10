@@ -23,7 +23,7 @@ exports.getAllEvents = async function (req, res) {
             if (err) console.log(`Error connecting to ${config.db.database}: ${err}`);
         });
 
-        db.query(query.createNewCalendar, [uID, cID], async function (err, results) {
+        db.query(query.getAllEvents, [uID, cID], async function (err, results) {
             if (err) console.log(`*****${err}`);
 
             if (results != null) { // If we found something, attempt to send json packet
@@ -71,7 +71,7 @@ exports.getOneEvent = async function (req, res) {
             if (err) console.log(`Error connecting to ${config.db.database}: ${err}`);
         });
 
-        db.query(query.createNewCalendar, [uID, cID, eID], async function (err, results) {
+        db.query(query.getEvent, [uID, cID, eID], async function (err, results) {
             if (err) console.log(`*****${err}`);
 
             if (results != null) { // If we found something, attempt to send json packet

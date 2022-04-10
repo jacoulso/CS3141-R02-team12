@@ -5,7 +5,7 @@ const router = express.Router();
 // Retrieve all events related to a uID and a cID
 router.get('/getAll', controller.getAllEvents);
 
-// Retrieve a specific event based on eID
+// Retrieve a specific event based on a uID, cID, and eID
 router.get('/getOne', controller.getOneEvent);
 
 // Add an event, takes in a uID and a cID

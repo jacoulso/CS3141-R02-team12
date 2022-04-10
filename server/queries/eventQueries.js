@@ -1,6 +1,6 @@
 const eventQueries = {
-    getEvent: 'SELECT * FROM Events WHERE eID=? AND creatorID=?',
-    getAllEvents: 'SELECT * FROM Events WHERE creatorID=?',
+    getEvent: 'SELECT * FROM Events WHERE creatorID=? AND calendarID=? AND eID=?',
+    getAllEvents: 'SELECT * FROM Events WHERE creatorID=? AND calendarID=?',
     addEvent: "INSERT INTO Events (creatorID,calendarID," +
                                     "colorID,title,isAllDay," +
                                     "dateTimeStart,dateTimeEnd,duration," +
