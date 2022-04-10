@@ -3,10 +3,10 @@ const eventQueries = {
     getAllEvents: 'SELECT * FROM Events WHERE creatorID=?',
     addEvent: "INSERT INTO Events (creatorID,calendarID," +
                                     "colorID,title,isAllDay," +
-                                    "dateTimeStart,dateTimeEnd," +
+                                    "dateTimeStart,dateTimeEnd,duration," +
                                     "location,eventTypeID,priorityID," +
                                     "description,recurrence,recurrenceEndDate)" + 
-              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     updateEvent: '',
     deleteEvent: ''
   };
