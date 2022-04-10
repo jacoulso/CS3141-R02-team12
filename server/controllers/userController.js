@@ -161,6 +161,15 @@ exports.authenticateLogin = async function (req, res, next) {
     }
 }
 
+// Removes a specific calendar based on a given calendar ID
+exports.delete = async function (req, res) {
+    res.status(200).json({ 'message': 'Backend not implemented yet.' });
+}
+
+// Removes a specific calendar based on a given calendar ID
+exports.update = async function (req, res) {
+    res.status(200).json({ 'message': 'Backend not implemented yet.' });
+}
 function parseToken(token) {
     return jwt.verify(token.split(' ')[1], config.jwt.secret);
 }
