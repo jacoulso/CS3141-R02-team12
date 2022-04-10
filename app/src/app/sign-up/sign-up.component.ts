@@ -3,7 +3,15 @@ import {Router} from '@angular/router';
 import { ApiserviceService } from '../apiservice.service';
 import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
 import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {AppRoutingModule, routingComponents} from "../app-routing.module";
 
 @Component({
@@ -12,42 +20,58 @@ import {AppRoutingModule, routingComponents} from "../app-routing.module";
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  validationForm: FormGroup;
 
-  constructor( private router:Router) {
-    this.validationForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.email),
-      password: new FormControl(null, Validators.pattern(/^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,128}$/)),
-      cPassword: new FormControl(null, Validators.pattern(/.*/)),
+  registerForm!: FormGroup;
+  submitted = false;
 
-    });
+  constructor( private router:Router, private formBuilder: FormBuilder) {
+
   }
 
-
-  get username(): AbstractControl {
-    return this.validationForm.get('username')!;
-  }
-
-  get email(): AbstractControl {
-    return this.validationForm.get('email')!;
-  }
-
-  get password(): AbstractControl {
-    return this.validationForm.get('password')!;
-  }
-
-  get cPassword(): AbstractControl {
-    return this.validationForm.get('cPassword')!;
-  }
 
   ngOnInit(): void {
+    this.registerForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+    }, {
+      validator: MustMatch('password', 'confirmPassword')
+    });
+  }
+  get f() {return this.registerForm?.controls;}
+  onSubmit(){
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
+      return;
+    }
+
+    // display form values on success
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+  }
+  onReset(){
+    this.submitted=false;
+    this.registerForm.reset();
   }
 }
-/** A hero's name can't match the given regular expression */
-export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const forbidden = nameRe.test(control.value);
-    return forbidden ? {forbiddenName: {value: control.value}} : null;
-  };
+function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+    const control = formGroup.controls[controlName];
+    const matchingControl = formGroup.controls[matchingControlName];
+
+    // @ts-ignore
+    if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+      // return if another validator has already found an error on the matchingControl
+      return;
+    }
+
+    // set error on matchingControl if validation fails
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({ mustMatch: true });
+    } else {
+      matchingControl.setErrors(null);
+    }
+  }
 }

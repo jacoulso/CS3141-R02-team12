@@ -31,6 +31,7 @@ import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
         HttpClientModule,
         CalendarModule,
         AppRoutingModule,
+        ReactiveFormsModule,
         CalendarModule.forRoot({
             provide: DateAdapter,
             useFactory: adapterFactory,
