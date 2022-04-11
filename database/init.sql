@@ -43,6 +43,7 @@ DROP TABLE IF EXISTS PriorityLookup;
 DROP TABLE IF EXISTS EventColorLookup;
 DROP TABLE IF EXISTS guestLookup;
 DROP TABLE IF EXISTS friendLookup;
+DROP TABLE IF EXISTS UserFriends;
 
 -- Tables
 DROP TABLE IF EXISTS Users;
@@ -206,7 +207,7 @@ CREATE PROCEDURE check_All(IN userID INT, IN currentTime DATETIME, IN includeFri
     CALL is_Available(userID, currentTime, isAvail);
     IF (includeFriends & isAvail) THEN
 		SELECT count(*) INTO numFriends FROM FriendLookup WHERE uID = userID;
-		SELECT * INTO UserFriends FROM FriendLookup WHERE uID = userID;
+        INSERT INTO UserFriends (SELECT * FROM FriendLookup WHERE uID = userID);
 		nextFriend: LOOP
 			SET nextFriend = nextFriend + 1;
 			IF (nextFriend < numFriends) THEN
