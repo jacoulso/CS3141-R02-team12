@@ -23,8 +23,9 @@ export class SignUpComponent implements OnInit {
 
   registerForm!: FormGroup;
   submitted = false;
+  errors: any = [];
 
-  constructor( private router:Router, private formBuilder: FormBuilder) {
+  constructor( private router:Router, private formBuilder: FormBuilder, private service:ApiserviceService) {
 
   }
 
@@ -42,18 +43,26 @@ export class SignUpComponent implements OnInit {
   get f() {return this.registerForm?.controls;}
   onSubmit(){
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
+    }else{
+      this.register();
     }
-
-    // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
   }
   onReset(){
     this.submitted=false;
     this.registerForm.reset();
+  }
+  register(): void {
+    this.errors = [];
+    this.service.register(this.registerForm.value)
+        .subscribe(() => {
+              this.router.navigate(['/login'], { queryParams: { registered: 'success' } });
+            },
+            (errorResponse) => {
+              this.errors.push(errorResponse.error.error); // notice how we never ever look at this array C;
+            });
   }
 }
 function MustMatch(controlName: string, matchingControlName: string) {
@@ -75,3 +84,4 @@ function MustMatch(controlName: string, matchingControlName: string) {
     }
   }
 }
+// send user register information to the server and go back to the login page

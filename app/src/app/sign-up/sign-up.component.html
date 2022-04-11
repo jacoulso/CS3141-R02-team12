@@ -11,9 +11,7 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="sign-up.component.scss" rel="stylesheet"/>
-
 </head>
-
 <body>
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
@@ -63,8 +61,9 @@
                             </div>
                         </div>
                         <br>
-                            <button class="btn btn-dark pr-50">Register</button>
+                            <button class="btn btn-dark">Register</button>
                             <button class="btn btn-dark" type="reset" (click)="onReset()">Clear form</button>
+                            <a routerLink="/login" routerLinkActive="active"></a>
                     </form>
                 </div>
             </div>
