@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiserviceService } from '../apiservice.service'; 
+import { ApiserviceService } from '../apiservice.service';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
         this.notify = 'You have been successfully registered. Please Log in';
       }
       if (params[key2] === 'success') {
-        this.notify = 'You have been loggedout successfully';
+        this.notify = 'You have been logged out successfully';
       }
     });
     if (this.service.isAuthenticated()) { // If we are already logged in, just go to the home page...
@@ -42,6 +43,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
   login(): void {
     this.errors = [];
     this.service.login(this.loginForm.value)
@@ -49,7 +51,9 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/home'], { queryParams: {  } });
        },
         (errorResponse) => {
+          this.loginForm.reset();
           this.errors.push(errorResponse.error.error);
         });
   }
 }
+
