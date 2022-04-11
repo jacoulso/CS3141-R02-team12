@@ -28,9 +28,12 @@ DROP PROCEDURE IF EXISTS is_DND;
 DROP PROCEDURE IF EXISTS is_Event;
 DROP PROCEDURE IF EXISTS friend_search;
 DROP PROCEDURE IF EXISTS user_create;
+DROP PROCEDURE IF EXISTS cal_create;
 DROP PROCEDURE IF EXISTS link_UserCal;
 DROP PROCEDURE IF EXISTS create_DND;
 DROP PROCEDURE IF EXISTS day_Convert;
+DROP PROCEDURE IF EXISTS cal_getAll;
+DROP PROCEDURE IF EXISTS cal_getOne;
 
 -- Lookups
 DROP TABLE IF EXISTS UserDoNotDisturbHoursLookup;
@@ -233,13 +236,12 @@ CREATE PROCEDURE is_Available(IN userID INT, IN currentTime DATETIME, INOUT isAv
     END //
 
 -- Determine whether a user is in DND hours
--- ASSUMES DND HOURS BETWEEN MULTIPLE DAYS ARE TREATED AS TWO SEPARATE DND EVENTS
--- NEED TO IMPLEMENT DAY OF WEEK SEARCH STILL
 CREATE PROCEDURE is_DND(IN userID INT, IN currentTime DATETIME, INOUT isDND BOOLEAN)
 	BEGIN
     DECLARE dayWeek CHAR(1) DEFAULT dayofweek(DATE(currentTime));
     CALL day_Convert(dayWeek);
-    IF (SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND recurrence LIKE concat('%', @dayWeek, '%')) THEN
+    IF (SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID
+        AND recurrence LIKE concat('%', @dayWeek, '%')) THEN
 		SET isDND = false;
 	ELSEIF ((SELECT count(*) FROM UserDoNotDisturbHoursLookup WHERE uID = userID AND
 			 startDate <= TIME(currentTime) AND endDate >= TIME(currentTime)) > 0) THEN
@@ -250,7 +252,8 @@ CREATE PROCEDURE is_DND(IN userID INT, IN currentTime DATETIME, INOUT isDND BOOL
 -- Determine whether a user has a conflicting event
 CREATE PROCEDURE is_Event(IN userID INT, IN currentTime DATETIME, INOUT isEvent BOOLEAN)
 	BEGIN
-    IF ((SELECT count(*) FROM Events WHERE creatorID = userID AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
+    IF ((SELECT count(*) FROM Events WHERE creatorID = userID
+         AND dateTimeStart <= currentTime AND dateTimeEnd >= currentTime) > 0) THEN
 		SET isEvent = true;
 	ELSE
 		SET isEvent = false;
@@ -266,17 +269,23 @@ CREATE PROCEDURE friend_Search(IN keyword varchar(128))
 -- Create a user and their default calendar
 CREATE PROCEDURE user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
 	BEGIN
-    INSERT INTO Users (username, password, email) values(newName, newPass, newMail);
-    CALL link_UserCal(newName);
-    END //
-    
--- Create a new calendar and link the creator's user ID to the calendar ID
-CREATE PROCEDURE link_UserCal(IN newName varchar(100))
-	BEGIN
     DECLARE userID INT DEFAULT 0;
+    INSERT INTO Users (username, password, email) values(newName, newPass, newMail);
+    SELECT LAST_INSERT_ID() INTO userID;
+    CALL cal_create(userID, newName);
+    END //
+
+-- Insert a new calendar into the table and link it to the provided userID
+CREATE PROCEDURE cal_create(IN userID INT, IN calTitle varchar(256))
+	BEGIN
+    INSERT INTO Calendars (title) values(calTitle);
+    CALL link_UserCal(userID, calTitle);
+    END //
+
+-- Link a user's ID to a calendar using a lookup
+CREATE PROCEDURE link_UserCal(IN userID INT, IN calTitle varchar(256))
+	BEGIN
     DECLARE calID INT DEFAULT 0;
-    SELECT uID FROM Users WHERE username = newName INTO userID;
-    INSERT INTO Calendars (title) values(newName);
     SELECT LAST_INSERT_ID() INTO calID;
     INSERT INTO UserCalendarsLookup values(calID, userID);
     END //
@@ -304,6 +313,18 @@ CREATE PROCEDURE day_Convert(INOUT dayWeek CHAR(1))
         WHEN dayWeek = '6' THEN SET dayWeek = 'F';
         ELSE SET dayWeek = 'S';
 	END CASE;
+    END //
+
+-- Retrieve all calendars associated with a certain user
+CREATE PROCEDURE cal_getAll(IN userID INT)
+	BEGIN
+    SELECT cID FROM UserCalendarsLookup WHERE uID = userID;
+    END //
+
+-- Retrieve information of a certain calendar of a given user
+CREATE PROCEDURE cal_getOne(IN userID INT, IN calTitle varchar(256)) 
+	BEGIN
+    SELECT * FROM Calendars WHERE calTitle IN (SELECT * FROM UserCalendarsLookup WHERE uID = userID);
     END //
 
 
