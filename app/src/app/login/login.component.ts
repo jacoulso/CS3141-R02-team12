@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
         this.notify = 'You have been successfully registered. Please Log in';
       }
       if (params[key2] === 'success') {
-        this.notify = 'You have been loggedout successfully';
+        this.notify = 'You have been logged out successfully';
       }
     });
     if (this.service.isAuthenticated()) { // If we are already logged in, just go to the home page...
@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/home'], { queryParams: {  } });
        },
         (errorResponse) => {
+          this.loginForm.reset();
           this.errors.push(errorResponse.error.error);
         });
   }

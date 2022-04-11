@@ -1,24 +1,3 @@
-.form-control:-ms-input-placeholder {
-    color: #6c757d;
-    opacity: 1;
-}
-.form-floating > .form-control:-ms-input-placeholder {
-    color: transparent;
-}
-.form-floating > .form-control:not(:-ms-input-placeholder) {
-    padding-top: 1.625rem;
-    padding-bottom: 0.625rem;
-}
-.form-floating > .form-control:not(:-ms-input-placeholder) ~ label {
-    opacity: 0.65;
-    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-}
-.btn{
-    -ms-user-select: none;
-}
-.btn-close:disabled, .btn-close.disabled{
-    -ms-user-select: none;
-}
 .gradient-custom {
     /* fallback for old browsers */
     background: #6a11cb;
