@@ -99,7 +99,7 @@ exports.login = async function (req, res) {
         db.query(query.authenticateLogin, [userCred], async function (err, results) {
             if (err) { console.log(`*****${err}`); }
 
-            if (results != null) { // If we found something, attempt to send json packet
+            if (results[0] != null) { // If we found something, attempt to send json packet
                 const comp = await bcrpyt.compare(userPassword, results[0].password);
                 if (comp) {
                     // If we have a valid login, sign it and ship it
@@ -122,6 +122,13 @@ exports.login = async function (req, res) {
                     console.log(`***Failed login attempt for user ${userCred}.`);
                     res.send(rjp);
                 }
+            } else {
+                console.log(`***Results were null. You sure this user is real?`);
+                res.send({
+                    message: "Query ran successfully.",
+                    data: "Login attempt failed. Invalid username or password.", // pass back query results
+                    successCode: false
+                });
             }
         });
     } catch (err) { console.log(err); }
@@ -148,7 +155,7 @@ exports.authenticateLogin = async function (req, res, next) {
             if (result == user) {
                 return res.locals.user = user; // Is valid, return the user data
                 next();
-            } 
+            }
         } else {
             return res.status(422).json({ 'error': 'Unauthorized login!' })
         }
