@@ -63,4 +63,17 @@ export class ModalComponent implements OnInit {
   deleteEvent(): void {
 
   }
+  
+  show = true;
+  
+  showGuest() {
+    let checkboxes = document.getElementById("checkBoxes") as HTMLDivElement;
+    if (this.show) {
+      checkboxes.style.display = "block";
+      this.show = false;
+    } else {
+      checkboxes.style.display = "none";
+      this.show = true;
+    }
+  }
 }

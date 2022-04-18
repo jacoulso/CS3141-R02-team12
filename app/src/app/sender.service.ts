@@ -10,11 +10,13 @@ export class SenderService {
   public start!: Date;
   public end!: Date;
   public priority!: number;
+  public oldPriority!: number;
   public allDay!: boolean;
   public url!: string;
 
   event1: Subject<any> = new Subject();
   event2: Subject<any> = new Subject();
+  event3: Subject<any> = new Subject();
 
   addEvent(value: any) {
     this.event1.next(value);
@@ -22,6 +24,10 @@ export class SenderService {
 
   sendString(value: any) {
     this.event2.next(value);
+  }
+
+  sendPriority(value: any) {
+    this.event3.next(value);
   }
 
   constructor() {

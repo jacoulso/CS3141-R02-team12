@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import $ from 'jquery';
+import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
+import {EventModalComponent} from "../../event-modal/event-modal.component";
 
 @Component({
   selector: 'app-sidebar',
@@ -9,7 +11,15 @@ import $ from 'jquery';
 
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  eventModalRef: MdbModalRef<EventModalComponent> | null = null;
+  
+  constructor(
+      private modalService: MdbModalService
+  ) { }
+  
+  openEvent() {
+    this.eventModalRef = this.modalService.open(EventModalComponent);
+  }
 
   ngOnInit(): void {
 

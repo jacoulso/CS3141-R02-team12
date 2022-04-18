@@ -15,6 +15,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
 import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
+import { PriorityModalComponent } from "./priority-modal/priority-modal.component";
+import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { EventModalComponent } from './event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,8 @@ import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
     HeaderComponent,
     CalendarComponent,
     ModalComponent,
-    SignUpComponent
+    SignUpComponent, 
+    PriorityModalComponent, EventModalComponent
   ],
     imports: [
         BrowserModule,
@@ -44,6 +48,7 @@ import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
         ReactiveFormsModule,
         MdbFormsModule,
         MdbValidationModule,
+        MdbModalModule
     ],
   providers: [ApiserviceService],
   bootstrap: [AppComponent]

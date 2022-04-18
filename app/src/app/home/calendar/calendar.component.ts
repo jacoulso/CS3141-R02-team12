@@ -13,6 +13,9 @@ import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import interactionPlugin, {DateClickArg} from "@fullcalendar/interaction";
 import {SenderService} from "../../sender.service";
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { PriorityModalComponent } from '../../priority-modal/priority-modal.component';
+import {EventModalComponent} from "../../event-modal/event-modal.component";
 
 
 FullCalendarModule.registerPlugins([
@@ -31,9 +34,13 @@ FullCalendarModule.registerPlugins([
 export class CalendarComponent implements OnInit {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+  
+  modalRef: MdbModalRef<PriorityModalComponent> | null = null;
+  eventModalRef: MdbModalRef<EventModalComponent> | null = null;
 
   constructor(
-      private service: SenderService
+      private service: SenderService,
+      private modalService: MdbModalService
   ) {
     this.service.event1.subscribe( value => {
       if (value == this.service.title) {
@@ -52,7 +59,7 @@ export class CalendarComponent implements OnInit {
   Events: any[] = [];
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin,
-      timeGridPlugin,
+      timeGridPlugin, 
       listPlugin,
       iCalendarPlugin,
       interactionPlugin],
@@ -63,8 +70,11 @@ export class CalendarComponent implements OnInit {
     },
     events: {
       url: this.ics,
-      format: 'ics'
+      format: 'ics',
     },
+    eventTextColor: "white",
+    eventBackgroundColor: "red",
+    eventBorderColor: "red",
     initialView: 'dayGridMonth',
     weekends: true,
     nextDayThreshold: "00:00:00",
@@ -87,7 +97,6 @@ export class CalendarComponent implements OnInit {
     let title = arg.event.title;
     let priority = arg.event.extendedProps['priority'];
     let start = arg.event.start;
-
     let end = arg.event.end;
     let allDay = arg.event.allDay;
     console.log(`Title: ${title}`);
@@ -97,7 +106,7 @@ export class CalendarComponent implements OnInit {
     console.log(`Start: ${1 + start?.getUTCMonth()}-${start?.getUTCDate()}-${start?.getUTCFullYear()} at ${start?.getUTCHours()}:${start?.getUTCMinutes()}`);
     // @ts-ignore
     console.log(`End: ${1 + end?.getUTCMonth()}-${end?.getUTCDate()}-${end?.getUTCFullYear()} at ${end?.getUTCHours()}:${end?.getUTCMinutes()}`);
-    //This is where we add to database I think
+    //This is where we add to database
   }
 
   handleDateClick(arg: DateClickArg) {
@@ -108,15 +117,25 @@ export class CalendarComponent implements OnInit {
 
   handleEventClick(arg: EventClickArg) {
     const calendarApi = arg.event;
-
-    if (calendarApi) {
-      if (calendarApi.allDay) {
-        // @ts-ignore
-        alert(`${calendarApi.title} from ${calendarApi.start.toLocaleDateString()} to ${calendarApi.end.toLocaleDateString()}`)
+    if (!calendarApi.extendedProps['priority']) {
+      this.modalRef = this.modalService.open(PriorityModalComponent);
+      this.modalRef.onClose.subscribe((message: number) => {
+        calendarApi.setExtendedProp("priority", message);
+        calendarApi.setProp("backgroundColor", "green");
+        calendarApi.setProp("borderColor", "green");
+        //Update database
       }
-      else {
-        // @ts-ignore
-        alert(`${calendarApi.title} from ${calendarApi.start.toLocaleDateString()} at ${calendarApi.start.toLocaleTimeString()} to ${calendarApi.end.toLocaleDateString()} at ${calendarApi.end.toLocaleTimeString()}`)
+      )
+    } else {
+      if (calendarApi) {
+        if (calendarApi.allDay) {
+          // @ts-ignore
+          alert(`${calendarApi.title} from ${calendarApi.start.toLocaleDateString()} to ${calendarApi.end.toLocaleDateString()} with priority ${calendarApi.extendedProps['priority']}`)
+        }
+        else {
+          // @ts-ignore
+          alert(`${calendarApi.title} from ${calendarApi.start.toLocaleDateString()} at ${calendarApi.start.toLocaleTimeString()} to ${calendarApi.end.toLocaleDateString()} at ${calendarApi.end.toLocaleTimeString()} with priority ${calendarApi.extendedProps['priority']}`)
+        }
       }
     }
   }
@@ -128,14 +147,36 @@ export class CalendarComponent implements OnInit {
 
   add(title:string, priority:number, start:Date, end:Date, allDay:boolean) {
     const calendarApi = this.calendarComponent.getApi();
-    calendarApi.addEvent({
-      id: this.createEventId(),
-      priority: priority,
-      title: title,
-      start: start,
-      end: end,
-      allDay: allDay,
-    })
+    if (priority) {
+      calendarApi.addEvent({
+        id: this.createEventId(),
+        priority: priority,
+        title: title,
+        start: start,
+        end: end,
+        allDay: allDay,
+        textColor: "white",
+        backgroundColor: "green",
+        borderColor: "green"
+      })
+    }
+    else {
+      calendarApi.addEvent({
+        id: this.createEventId(),
+        priority: priority,
+        title: title,
+        start: start,
+        end: end,
+        allDay: allDay,
+        textColor: "white",
+        backgroundColor: "red",
+        borderColor: "red"
+      })
+    }
+    calendarApi.getEvents().forEach( item => {
+          console.log("Title: " + item.title);
+        }
+    );
   }
 
   uploadICS(ics: string) {
@@ -145,8 +186,18 @@ export class CalendarComponent implements OnInit {
       format: 'ics'
     }
     calendarApi.render();
+    this.getICSEvents();  
   }
-
+  
+  getICSEvents() {
+    const calendarApi = this.calendarComponent.getApi();
+    calendarApi.getEvents().forEach( item => {
+          console.log("Title: " + item.title);
+        }
+    );
+    console.log("passed");
+  }
+  
   ngOnInit(): void {
   }
 

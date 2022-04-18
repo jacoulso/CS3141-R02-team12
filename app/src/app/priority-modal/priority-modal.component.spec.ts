@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImportCalComponent } from './import-cal.component';
+import { PriorityModalComponent } from './priority-modal.component';
 
-describe('ImportCalComponent', () => {
-  let component: ImportCalComponent;
-  let fixture: ComponentFixture<ImportCalComponent>;
+describe('PriorityModalComponent', () => {
+  let component: PriorityModalComponent;
+  let fixture: ComponentFixture<PriorityModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImportCalComponent ]
+      declarations: [ PriorityModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportCalComponent);
+    fixture = TestBed.createComponent(PriorityModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,91 @@
+<!-- The Modal -->
+<div class="modal" id="eventModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" style="color:black">Add New Event</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:black"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="eventForm">
+                    <label style="color:black">Event Title: <input type="text" id="eventTitle">&nbsp;</label>
+                    <br>
+                    <label style="color:black">Start: <input type="datetime-local" id="startDate">&nbsp;</label>
+                    <label style="color:black">End: <input type="datetime-local" id="endDate">&nbsp;</label>
+                    <label style="color:black">All Day: <input type="checkbox" id="allDay">&nbsp;</label>
+                    <br>
+                    <label style="color:black">Show Recommended Times <input type="checkbox" id="times">&nbsp;&nbsp;</label>
+                    <label style="color:black">Duration: (min) <input type="number" id="duration" min="1">&nbsp;</label>
+                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Guests
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <form>
+                            <label style="color:black"><input type="checkbox" id="fOne">  Friend1</label>
+                            <br>
+                            <label style="color:black"><input type="checkbox"  id="fTwo">  Friend2</label>
+                            <br>
+                            <label style="color:black"><input type="checkbox"  id="fThree">  Friend3</label>
+                        </form>
+                    </ul>
+                    <br>
+                    <label style="color:black">Location: <input type="text" id="location">&nbsp;</label>
+                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Recurrence
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <form>
+                            <label style="color:black"><input type="radio" name="recurence" id="one">  One Time</label>
+                            <br>
+                            <label style="color:black"><input type="radio" name="recurence" id="weekly">  Weekly</label>
+                            <br>
+                            <label style="color:black"><input type="radio" name="recurence" id="biweekly">  Biweekly</label>
+                        </form>
+                    </ul>
+                    <br>
+                    <button class="dropdown-toggle" type="button" id="eventDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Event Type
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <form>
+                            <label style="color:black"><input type="radio" name="type" id="meeting">  Meeting</label>
+                            <br>
+                            <label style="color:black"><input type="radio" name="type" id="lunch">  Lunch</label>
+                            <br>
+                            <label style="color:black"><input type="radio" name="type" id="hangout">  Hangout</label>
+                        </form>
+                    </ul>
+                    &nbsp;
+                    <button class="dropdown-toggle" type="button" id="busyDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Busy?
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <form>
+                            <label style="color:black"><input type="radio" name="busy" id="yes">  Yes</label>
+                            <br>
+                            <label style="color:black"><input type="radio" name="busy" id="no">  No</label>
+                        </form>
+                    </ul>
+                    &nbsp;
+                    <label style="color:black">Priority: 1=High <input type="number" id="priority" min="1" max="5"></label>
+                    &nbsp;
+                    <label style="color:black">Notify Me <input type="checkbox" id="notify">&nbsp;</label>
+                    <br>
+                    <label style="color:black">Description: <textarea id="description" cols="40" rows="5"></textarea>&nbsp;</label>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="getNewEvent()" data-bs-dismiss="modal">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+

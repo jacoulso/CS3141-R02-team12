@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Add Event Priority</h5>
+    <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modalRef.close()"
+    ></button>
+</div>
+<div class="modal-body">
+    <label><strong>Enter Event Priority:</strong> 1 (High) - 5 (Low)</label><br>
+    <input type="number" id="oldpriority" min="1" max="5">
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="close()">Save</button>
+</div>

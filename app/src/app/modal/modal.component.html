@@ -1,7 +1,7 @@
 
 
 <!-- Modal of the new event-->
-<div class="modal fade" id="event-modal" tabindex="-1" aria-labelledby="modal-title"
+<div class="modal fade" id="event-modal" aria-labelledby="modal-title"
      aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -15,21 +15,118 @@
             </div>
 
             <!-- Body of the modal -->
-            <div class="modal-body" >
-                <form id="form">
-                    <label style="color:black"><strong>Enter a Title:</strong></label><br>
-                    <input type="text" id="title">
-                    <br>
-                    <label style="color:black"><strong>Priority:</strong> 1: High - 5: Low </label><br>
-                    <input type="number" id="priority" min="1" max="5"><br>
-                    <label for="allDay" style="color:black"><strong> All Day: </strong></label>
-                    <input type="checkbox" id="allDay"><br>
-                    <label style="color:black"><strong>Start: </strong></label><br>
-                    <input type="datetime-local" id="start"><br>
-                    <label style="color:black"><strong>End: </strong></label><br>
-                    <input type="datetime-local" id="end">
-                </form>
+            <div >
+                <form id="form"> 
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label for="title" style="color:black">Event Title:</label>
+                                <input type="text" id="title">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label style="color:black">Date: <input type="date" id="date" class="form-control"></label>
+                        </div>
+                        <div class="col">
+                            <label style="color:black">Start Time: <input type="time" id="start" class="form-control"></label>
+                        </div>
+                        <div class="col">
+                            <label style="color:black">End Time: <input type="time" id="end" class="form-control"></label>
+                        </div>
+                        <div class="col">
+                            <label style="color:black">All Day: <input type="checkbox" id="allDay"></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label style="color:black"><input type="checkbox" id="times"> Show Recommended Times</label>
+                        </div>
+                        <div class="col">
+                            <div class="multipleSelection">
+                                <div class="selectBox"
+                                     (click)="showGuest()">
+                                    <select>
+                                        <option>Guests</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
 
+                                <div id="checkBoxes">
+                                    <label for="first">
+                                        <input type="checkbox" id="first" />
+                                        checkBox1
+                                    </label>
+
+                                    <label for="second">
+                                        <input type="checkbox" id="second" />
+                                        checkBox2
+                                    </label>
+                                    <label for="third">
+                                        <input type="checkbox" id="third" />
+                                        checkBox3
+                                    </label>
+                                    <label for="fourth">
+                                        <input type="checkbox" id="fourth" />
+                                        checkBox4
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                    <br>
+                    <label style="color:black">Location: <input type="text" id="location">&nbsp;</label>
+                    <button class="dropdown-toggle" type="button" id="recurrence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Recurrence</button>
+                    <form class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        
+                    </form>
+                    <br>
+                    
+                    <br>
+                    
+                    <br>
+                </form>
+<!--
+                <form id="form">
+                    <div class="form-outline mb-4">
+                        <input type="text" id="title" class="form-control" />
+                        <label class="form-label" for="title">Title</label>
+                    </div>
+                    
+                    &lt;!&ndash; 2 column grid layout with text inputs for the first and last names &ndash;&gt;
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="datetime-local" id="start" class="form-control" />
+                                <label class="form-label" for="start">Start</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="datetime-local" id="end" class="form-control" />
+                                <label class="form-label" for="end">End</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    &lt;!&ndash; Password input &ndash;&gt;
+                    <div class="form-outline mb-4">
+                        <input type="number" id="priority" class="form-control" />
+                        <label class="form-label" for="priority">Priority</label>
+                    </div>
+
+                    &lt;!&ndash; Checkbox &ndash;&gt;
+                    <div class="form-check d-flex justify-content-center mb-4">
+                        <input class="form-check-input me-2" type="checkbox" value="" id="allDay" />
+                        <label class="form-check-label" for="allDay">
+                            All Day
+                        </label>
+                    </div>
+                </form>-->    
             </div>
 
             <!-- footer of the modal -->
