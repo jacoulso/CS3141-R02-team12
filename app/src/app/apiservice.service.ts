@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import * as moment from 'moment';
@@ -9,7 +9,7 @@ const jwt = new JwtHelperService();
 // Define a custom token struct to use for storing and decoding
 class Token {
   exp!: number;
-  username!: string ;
+  username!: string;
 }
 
 @Injectable({
@@ -17,17 +17,18 @@ class Token {
 })
 export class ApiserviceService {
 
-   // connect frontend to backend 
+  // connect frontend to backend 
   private apiUrl = "http://localhost:3000";
   private loginAuthPath = this.apiUrl + "/login";
   private registerPath = this.apiUrl + "/signup";
+  private calendarPath = this.apiUrl + "/calendars"
   private eventPath = this.apiUrl + "/events"
 
   private decodedToken = new Token();
 
   // ---- Authentication --------------------------------------
 
-  constructor(private _http: HttpClient) { 
+  constructor(private _http: HttpClient) {
     // Define a token. compiler flags potential null assignments to values, hence the 'or null' 
     this.decodedToken = JSON.parse(localStorage.getItem('auth_meta') || '{}') || new Token();
   }
@@ -66,4 +67,28 @@ export class ApiserviceService {
   public getUsername(): string {
     return this.decodedToken.username;
   }
+
+  public getUID(): string {
+    return JSON.parse(localStorage.getItem('auth_meta') || '{}').uID
+  }
+
+  // ---- Calendars -------------------------------------------
+
+  // Given a uID, return all the calendars
+  public getAllCalendars(uID: string): Observable<any> {
+    return this._http.get<any>(this.calendarPath + `?uID=${uID}`);
+  }
+
+  // Given a uID and a cID, return the calendar associated 
+  public getOneCalendar(uID: any, cID: any): Observable<any> {
+    return this._http.get<any>(this.calendarPath + `/calendar?uID=${uID}&cID=${cID}`);
+  }
+
+  // Given a uID and a title, ask the server to create a new calendar with it
+  public createCalendarForUser(uID: any, title: any): Observable<any> {
+    return this._http.post(this.calendarPath + "/calendar", { uID, title } );
+  }
+
+  // ---- Events ----------------------------------------------
+
 }

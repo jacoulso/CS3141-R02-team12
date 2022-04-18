@@ -48,7 +48,6 @@ exports.createNewCalendar = async function (req, res) {
         })
     }
 }
-
 // Removes a specific calendar based on a given calendar ID
 exports.removeCalendar = async function (req, res) {
     res.status(200).json({ 'message': 'Backend not implemented yet.' });
@@ -57,7 +56,7 @@ exports.removeCalendar = async function (req, res) {
 // Get a specific calendar based on a uID and a cID
 exports.getOneCalendar = async function (req, res) {
     console.log(`***Retrieve specifc calendar requested...`);
-    const { uID, cID } = req.body;
+    const { uID, cID } = req.query;
 
     if (!uID) { // sanity check
         return res.status(422).json({ 'error': 'Please provide a valid user ID.' });
@@ -102,8 +101,8 @@ exports.getOneCalendar = async function (req, res) {
 
 // Get all calendars associated with a uID
 exports.getAllCalendars = async function (req, res) {
-    console.log(`***Retrieve specifc calendar requested...`);
-    const { uID } = req.body;
+    console.log(`***GET all calendars requested...`);
+    const uID = req.query.uID;
 
     if (!uID) { // sanity check
         return res.status(422).json({ 'error': 'Please provide a valid user ID.' });

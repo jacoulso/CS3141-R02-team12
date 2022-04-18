@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import { ApiserviceService } from '../apiservice.service';
+
 
 @Component({
   selector: 'app-home',
@@ -7,15 +9,19 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   
+  constructor(private service:ApiserviceService) { }
+
 
   ngOnInit(): void {
-    
-    /*EventApi.push({
-      start: new Date("2022-03-10T00:00-05:00"),
-      end: new Date("2022-03-10T00:00-05:00"),
-      color: {primary: "red", secondary: "blue"},
-      title: "HelloWorld"
-    })*/
-
+    this.loadAllCalendars();
   }
+
+  loadAllCalendars(): void {
+    const ud = this.service.getUID();
+    console.log(ud);
+    this.service.getAllCalendars(ud).subscribe( (res) => {
+      localStorage.setItem('user_cals', JSON.stringify(res.data));;
+    })
+  }
+
 }
