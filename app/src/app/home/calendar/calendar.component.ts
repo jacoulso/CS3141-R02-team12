@@ -150,4 +150,16 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // ---- API Service -----------------------------------------
+
+  // Run through all active calendars and init their events
+  loadAllEvents(): void {
+
+  }
+
+  // Take a specific calendar and load all of it's events
+  loadCalEvents(): void {
+
+  }
+
 }

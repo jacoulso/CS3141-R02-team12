@@ -48,4 +48,19 @@ export class ModalComponent implements OnInit {
       this.service.sendString("url");
     }
   }
+
+  
+  // ---- Service - Events ------------------------------------
+
+  addEvent(): void {
+
+  }
+
+  updateEvent(): void {
+
+  }
+
+  deleteEvent(): void {
+
+  }
 }

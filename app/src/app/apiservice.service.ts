@@ -26,6 +26,7 @@ export class ApiserviceService {
 
   private decodedToken = new Token();
 
+  
   // ---- Authentication --------------------------------------
 
   constructor(private _http: HttpClient) {
@@ -72,6 +73,7 @@ export class ApiserviceService {
     return JSON.parse(localStorage.getItem('auth_meta') || '{}').uID
   }
 
+
   // ---- Calendars -------------------------------------------
 
   // Given a uID, return all the calendars
@@ -89,6 +91,33 @@ export class ApiserviceService {
     return this._http.post(this.calendarPath + "/calendar", { uID, title } );
   }
 
+
   // ---- Events ----------------------------------------------
+
+  // GET all the events associated with a calendar
+  public getCalendarEvents(uID: any, cID: any): Observable<any> {
+    return this._http.get<any>(this.eventPath + `/getAll??uID=${uID}&cID=${cID}`);
+  }
+
+  // Get a specific event from a calendar
+  public getEvent(uID: any, cID: any, eID: any): Observable<any>{
+    return this._http.get<any>(this.eventPath + `/getOne??uID=${uID}&cID=${cID}&eID=${eID}`);
+  }
+
+  // Add a specific event to a specific calendar
+  public addEvent(body: any): Observable<any>{
+    return this._http.post(this.eventPath + `/add`, body);
+  }
+
+  // Update a specific event
+  public updateEvent(body: any): Observable<any>{
+    return this._http.post(this.eventPath + `/update`, body);
+  }
+
+  // Remove an event given the event ID
+  public deleteEvent(body: any): Observable<any>{
+    return this._http.post(this.eventPath + `/delete`, body);
+  }
+
 
 }
