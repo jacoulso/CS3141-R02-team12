@@ -20,50 +20,69 @@
                 <div class="card-body text-center">
                     <h3>Sign Up!</h3>
                     <br>
-                    <p class="text-white-50">Please create an username and password!</p>
-                    <p class="text-white-50 mb-5">You will be redirected to the login after signing up.</p>
+                    <p class="text-white-50">You will be redirected to the login once you register</p>
                     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                         <div class="form-row">
-                            <label>Username</label>
-                            <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                                <div *ngIf="f.username.errors.required">Username is required</div>
-                            </div>
+                            <mdb-form-control class="form-outline form-white">
+                                <input mdbInput type="text" id="username" formControlName="username"
+                                       class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
+                                <label mdbLabel class="form-label" for="username">Username</label>
+                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                    <div *ngIf="f.username.errors.required">Username is required</div>
+                                </div>
+                            </mdb-form-control>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col">
-                                <label>Email</label>
-                                <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                            <mdb-form-control class="form-outline form-white">
+                                <input mdbInput type="text" id="email" formControlName="email"
+                                       class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+                                <label mdbLabel class="form-label" for="email">Email</label>
                                 <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                                     <div *ngIf="f.email.errors.required">Email is required</div>
                                     <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
                                 </div>
+                            </mdb-form-control>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <mdb-form-control class="form-outline form-white">
+                                    <input mdbInput type="password" id="password" formControlName="password"
+                                           class="form-control"
+                                           [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+                                    <label mdbLabel class="form-label" for="password">Password</label>
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">Password is required</div>
+                                        <div *ngIf="f.password.errors.minlength">Password must be at least 6
+                                            characters
+                                        </div>
+                                    </div>
+
+                                </mdb-form-control>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col">
-                                <label>Password</label>
-                                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                    <div *ngIf="f.password.errors.required">Password is required</div>
-                                    <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label>Confirm Password</label>
-                                <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
-                                <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
-                                    <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
-                                    <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
-                                </div>
+                                <mdb-form-control class="form-outline form-white">
+                                    <input mdbInput type="password" id="cPassword" formControlName="confirmPassword"
+                                           class="form-control"
+                                           [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }"/>
+                                    <label mdbLabel class="form-label" for="cPassword">Confirm Password</label>
+                                    <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                                        <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required
+                                        </div>
+                                        <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                                    </div>
+                                </mdb-form-control>
                             </div>
                         </div>
                         <br>
-                            <button class="btn btn-dark">Register</button>
-                            <button class="btn btn-dark" type="reset" (click)="onReset()">Clear form</button>
+                        <div class = "">
+                            <button class="btn btn-dark btn-rounded" type="button">Register</button>
+                            <button class="btn btn-dark btn-rounded" type="button reset" (click)="onReset()">Clear form</button>
                             <a routerLink="/login" routerLinkActive="active"></a>
+                        </div>
                     </form>
                 </div>
             </div>
