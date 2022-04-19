@@ -3,7 +3,6 @@ import {SenderService} from "../../sender.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdbModalRef} from "mdb-angular-ui-kit/modal";
-import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
 
 @Component({
   selector: 'app-new-event-modal',
@@ -20,7 +19,6 @@ export class NewEventModalComponent implements OnInit {
       private service: SenderService,
       private formBuilder: FormBuilder,
       public modalRef: MdbModalRef<NewEventModalComponent>,
-      public MdbDropdownModule: MdbDropdownModule,
       ) {
     this.show = false;
   }
