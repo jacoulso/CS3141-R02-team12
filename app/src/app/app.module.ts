@@ -9,12 +9,14 @@ import { HeaderComponent } from './home/header/header.component';
 import { CalendarComponent } from './home/calendar/calendar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { ModalComponent } from './modal/modal.component'; // must go before plugins
 import { ApiserviceService } from './apiservice.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MdbModalModule, MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
 import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
+import {OverlayModule} from "@angular/cdk/overlay";
+import { NewEventModalComponent } from './modal/new-event-modal/new-event-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +25,8 @@ import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
     SidebarComponent,
     HeaderComponent,
     CalendarComponent,
-    ModalComponent,
-    SignUpComponent
+    SignUpComponent,
+    NewEventModalComponent,
   ],
     imports: [
         BrowserModule,
@@ -44,8 +46,14 @@ import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
         ReactiveFormsModule,
         MdbFormsModule,
         MdbValidationModule,
+        OverlayModule,
+        MdbModalModule,
     ],
-  providers: [ApiserviceService],
-  bootstrap: [AppComponent]
+  providers: [
+      ApiserviceService,
+  ],
+    bootstrap: [
+        AppComponent,
+    ]
 })
 export class AppModule { }

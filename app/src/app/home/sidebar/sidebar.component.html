@@ -6,16 +6,15 @@
     <link rel="stylesheet" href="sidebar.component.scss">
 </head>
 <body>
-
 <div class="flex-shrink-0 p-3 vh-100 bg-lavender" style="width: 280px;">
-    <app-modal></app-modal>
     <ul class="list-unstyled ps-0">
         <li class="mb-1">
-            <a id="eventButton" class="button" data-bs-toggle="modal"
-               data-bs-target="#event-modal">
-                <i class="fas fa-calendar-day"></i>
-                New Event
-            </a>
+            <button
+                    class="btn btn-primary"
+                    (click)="openNewEventModal()">
+                <i class="fas fa-calendar-day p-1"></i>
+                New event
+            </button>
         </li>
         <li class="mb-1">
             <button class="btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"

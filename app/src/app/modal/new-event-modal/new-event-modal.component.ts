@@ -1,20 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import {SenderService} from "../sender.service";
+import {SenderService} from "../../sender.service";
+import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MdbModalRef} from "mdb-angular-ui-kit/modal";
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css'],
+  selector: 'app-new-event-modal',
+  templateUrl: './new-event-modal.component.html',
+  styleUrls: ['./new-event-modal.component.css']
 })
-export class ModalComponent implements OnInit {
+export class NewEventModalComponent implements OnInit {
+
+  newEventForm!: FormGroup;
+
   constructor(
       private router: Router,
       private service: SenderService,
-  ) {
-  }
+      private formBuilder: FormBuilder,
+      public modalRef: MdbModalRef<NewEventModalComponent>
+      ) { }
 
   ngOnInit(): void {
+    this.newEventForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      priority: ['', [Validators.required]],
+      start: ['', [Validators.required,]],
+      end: [''],
+    },
+    );
   }
 
   getNewEvent() {
@@ -48,4 +61,6 @@ export class ModalComponent implements OnInit {
       this.service.sendString("url");
     }
   }
+
+
 }
