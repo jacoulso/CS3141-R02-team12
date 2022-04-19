@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import $ from 'jquery';
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {EventModalComponent} from "../../event-modal/event-modal.component";
+import {NewEventModalComponent} from "../../modal/new-event-modal/new-event-modal.component";
 
 
 @Component({
