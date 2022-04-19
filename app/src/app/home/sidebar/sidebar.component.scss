@@ -1,4 +1,4 @@
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import "~mdb-angular-ui-kit/assets/scss/mdb.scss";
 a,
 a:hover,
 a:focus {
@@ -37,6 +37,10 @@ a:focus {
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
+
+.bg-lavender{
+    background: #7386D5;
+}
 
 #sidebar {
     min-width: 250px;

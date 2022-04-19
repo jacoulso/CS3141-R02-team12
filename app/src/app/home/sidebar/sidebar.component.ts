@@ -3,13 +3,15 @@ import $ from 'jquery';
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {EventModalComponent} from "../../event-modal/event-modal.component";
 
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.scss'],
 })
 
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
+  modalRef: MdbModalRef<NewEventModalComponent> | null = null;
 
   eventModalRef: MdbModalRef<EventModalComponent> | null = null;
   
@@ -21,24 +23,7 @@ export class SidebarComponent implements OnInit {
     this.eventModalRef = this.modalService.open(EventModalComponent);
   }
 
-  ngOnInit(): void {
-
-    $(document).ready(function () {
-
-      $('#sidebarExpand').on('click',function () {
-        $('#sidebar').toggleClass('active');
-      });
-      
-
-    });
-    $(document).ready(function() {
-      $('input[type="checkbox"]').on('click', function() {
-        let inputValue = $(this).attr("value");
-        $("." + inputValue).toggle();
-      });
-    });
-
+  openNewEventModal() {
+    this.modalRef = this.modalService.open(NewEventModalComponent)
   }
-  
-
 }

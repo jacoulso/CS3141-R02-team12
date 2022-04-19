@@ -9,15 +9,17 @@ import { HeaderComponent } from './home/header/header.component';
 import { CalendarComponent } from './home/calendar/calendar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { ModalComponent } from './modal/modal.component'; // must go before plugins
 import { ApiserviceService } from './apiservice.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MdbModalModule, MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
 import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
-import { PriorityModalComponent } from "./priority-modal/priority-modal.component";
-import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
-import { EventModalComponent } from './event-modal/event-modal.component';
+import {OverlayModule} from "@angular/cdk/overlay";
+import { NewEventModalComponent } from './modal/new-event-modal/new-event-modal.component';
+import {MdbCheckboxModule} from "mdb-angular-ui-kit/checkbox";
+import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
+import {MdbRadioModule} from "mdb-angular-ui-kit/radio";
 
 @NgModule({
   declarations: [
@@ -26,9 +28,8 @@ import { EventModalComponent } from './event-modal/event-modal.component';
     SidebarComponent,
     HeaderComponent,
     CalendarComponent,
-    ModalComponent,
-    SignUpComponent, 
-    PriorityModalComponent, EventModalComponent
+    SignUpComponent,
+    NewEventModalComponent,
   ],
     imports: [
         BrowserModule,
@@ -48,9 +49,17 @@ import { EventModalComponent } from './event-modal/event-modal.component';
         ReactiveFormsModule,
         MdbFormsModule,
         MdbValidationModule,
-        MdbModalModule
+        OverlayModule,
+        MdbModalModule,
+        MdbCheckboxModule,
+        MdbDropdownModule,
+        MdbRadioModule
     ],
-  providers: [ApiserviceService],
-  bootstrap: [AppComponent]
+  providers: [
+      ApiserviceService,
+  ],
+    bootstrap: [
+        AppComponent,
+    ]
 })
 export class AppModule { }
