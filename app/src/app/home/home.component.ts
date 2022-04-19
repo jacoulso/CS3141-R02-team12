@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   loadAllCalendars(): void {
     const ud = this.service.getUID();
-    console.log(ud);
     this.service.getAllCalendars(ud).subscribe( (res) => {
       localStorage.setItem('user_cals', JSON.stringify(res.data));;
     })

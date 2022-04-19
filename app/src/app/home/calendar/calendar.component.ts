@@ -11,11 +11,12 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
-import interactionPlugin, {DateClickArg} from "@fullcalendar/interaction";
-import {SenderService} from "../../sender.service";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import { SenderService } from "../../sender.service";
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { PriorityModalComponent } from '../../priority-modal/priority-modal.component';
-import {EventModalComponent} from "../../event-modal/event-modal.component";
+import { EventModalComponent } from "../../event-modal/event-modal.component";
+import { ApiserviceService } from 'src/app/apiservice.service';
 
 
 FullCalendarModule.registerPlugins([
@@ -34,15 +35,16 @@ FullCalendarModule.registerPlugins([
 export class CalendarComponent implements OnInit {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
-  
+
   modalRef: MdbModalRef<PriorityModalComponent> | null = null;
   eventModalRef: MdbModalRef<EventModalComponent> | null = null;
 
   constructor(
-      private service: SenderService,
-      private modalService: MdbModalService
+    private service: SenderService,
+    private modalService: MdbModalService,
+    private apiService: ApiserviceService
   ) {
-    this.service.event1.subscribe( value => {
+    this.service.event1.subscribe(value => {
       if (value == this.service.title) {
         this.add(this.service.title, this.service.priority, this.service.start, this.service.end, this.service.allDay);
       }
@@ -59,7 +61,7 @@ export class CalendarComponent implements OnInit {
   Events: any[] = [];
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin,
-      timeGridPlugin, 
+      timeGridPlugin,
       listPlugin,
       iCalendarPlugin,
       interactionPlugin],
@@ -145,7 +147,7 @@ export class CalendarComponent implements OnInit {
     return String(this.eventGuid++);
   }
 
-  add(title:string, priority:number, start:Date, end:Date, allDay:boolean) {
+  add(title: string, priority: number, start: Date, end: Date, allDay: boolean) {
     const calendarApi = this.calendarComponent.getApi();
     if (priority) {
       calendarApi.addEvent({
@@ -173,9 +175,9 @@ export class CalendarComponent implements OnInit {
         borderColor: "red"
       })
     }
-    calendarApi.getEvents().forEach( item => {
-          console.log("Title: " + item.title);
-        }
+    calendarApi.getEvents().forEach(item => {
+      console.log("Title: " + item.title);
+    }
     );
   }
 
@@ -186,31 +188,40 @@ export class CalendarComponent implements OnInit {
       format: 'ics'
     }
     calendarApi.render();
-    this.getICSEvents();  
+    this.getICSEvents();
   }
-  
+
   getICSEvents() {
     const calendarApi = this.calendarComponent.getApi();
-    calendarApi.getEvents().forEach( item => {
-          console.log("Title: " + item.title);
-        }
+    calendarApi.getEvents().forEach(item => {
+      console.log("Title: " + item.title);
+    }
     );
     console.log("passed");
   }
-  
+
   ngOnInit(): void {
+    this.loadAllEvents();
   }
 
   // ---- API Service -----------------------------------------
 
   // Run through all active calendars and init their events
   loadAllEvents(): void {
-
+    const userCalData = localStorage.getItem('user_cals');
+    const uID = this.apiService.getUID();
+    JSON.parse(userCalData!).forEach((c: any) => {
+      this.loadCalEvents(uID, c);
+    });
   }
 
   // Take a specific calendar and load all of it's events
-  loadCalEvents(): void {
-
+  loadCalEvents(uID: any, c: any): void {
+    console.log(`Loading events for calendar '${c.title}'...`);
+    this.apiService.getCalendarEvents(uID, c.cID).subscribe( (res) => {
+      console.log(res);
+      sessionStorage.setItem(`cal_${c.title}_events`, JSON.stringify(res));
+    })
   }
 
 }
