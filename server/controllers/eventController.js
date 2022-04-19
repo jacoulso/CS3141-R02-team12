@@ -8,8 +8,8 @@ const db = mysql.createConnection(config.db);
 // Retrieve all events related to a uID and a cID
 exports.getAllEvents = async function (req, res) {
     console.log(`***Get all events requested...`);
-    const uID = req.params.uID;
-    const cID = req.params.cID;
+    const uID = req.query.uID;
+    const cID = req.query.cID;
 
     if (!uID) { // sanity check
         return res.status(422).json({ 'error': 'Please provide a valid user to look for.' });

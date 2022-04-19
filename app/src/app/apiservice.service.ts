@@ -96,7 +96,7 @@ export class ApiserviceService {
 
   // GET all the events associated with a calendar
   public getCalendarEvents(uID: any, cID: any): Observable<any> {
-    return this._http.get<any>(this.eventPath + `/getAll??uID=${uID}&cID=${cID}`);
+    return this._http.get<any>(this.eventPath + `/getAll?uID=${uID}&cID=${cID}`);
   }
 
   // Get a specific event from a calendar

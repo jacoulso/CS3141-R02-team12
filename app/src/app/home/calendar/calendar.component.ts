@@ -220,8 +220,17 @@ export class CalendarComponent implements OnInit {
     console.log(`Loading events for calendar '${c.title}'...`);
     this.apiService.getCalendarEvents(uID, c.cID).subscribe( (res) => {
       console.log(res);
-      sessionStorage.setItem(`cal_${c.title}_events`, JSON.stringify(res));
+      sessionStorage.setItem(`cal_${c.title}_events`, JSON.stringify(res.data));
     })
   }
 
+  // Unload all events in the cal_name_events session data and display them on the calendar
+  displayAllEvents() {
+
+  }
+
+  // 
+  displayCalEvents(cID: any) {
+
+  }
 }
