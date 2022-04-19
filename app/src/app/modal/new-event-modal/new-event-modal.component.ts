@@ -3,22 +3,27 @@ import {SenderService} from "../../sender.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdbModalRef} from "mdb-angular-ui-kit/modal";
+import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
 
 @Component({
   selector: 'app-new-event-modal',
   templateUrl: './new-event-modal.component.html',
-  styleUrls: ['./new-event-modal.component.css']
+  styleUrls: ['./new-event-modal.component.scss']
 })
 export class NewEventModalComponent implements OnInit {
 
   newEventForm!: FormGroup;
+  show : boolean;
 
   constructor(
       private router: Router,
       private service: SenderService,
       private formBuilder: FormBuilder,
-      public modalRef: MdbModalRef<NewEventModalComponent>
-      ) { }
+      public modalRef: MdbModalRef<NewEventModalComponent>,
+      public MdbDropdownModule: MdbDropdownModule,
+      ) {
+    this.show = false;
+  }
 
   ngOnInit(): void {
     this.newEventForm = this.formBuilder.group({

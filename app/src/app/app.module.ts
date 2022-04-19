@@ -17,6 +17,9 @@ import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
 import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
 import {OverlayModule} from "@angular/cdk/overlay";
 import { NewEventModalComponent } from './modal/new-event-modal/new-event-modal.component';
+import {MdbCheckboxModule} from "mdb-angular-ui-kit/checkbox";
+import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
+import {MdbRadioModule} from "mdb-angular-ui-kit/radio";
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import { NewEventModalComponent } from './modal/new-event-modal/new-event-modal.
         MdbValidationModule,
         OverlayModule,
         MdbModalModule,
+        MdbCheckboxModule,
+        MdbDropdownModule,
+        MdbRadioModule
     ],
   providers: [
       ApiserviceService,
