@@ -17,14 +17,14 @@
                     <label mdbLabel class="form-label" for="title"><strong>Event Title</strong></label>
                 </mdb-form-control>
             </div>
-            <div id="selectFriends" class="form">
-                <div mdbDropdown class="dropdown">
+            <div mdbDropdown id="selectFriends" class="dropdown">
                     <button
                             class="btn btn-primary dropdown-toggle"
                             type="button"
                             id="dropdownMenuButton"
                             aria-expanded="false"
                             mdbDropdownToggle
+                            #dropdown
                     >
                         Guests
                     </button>
@@ -33,7 +33,6 @@
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
-                </div>
             </div>
         </div>
         <label style="color:black"><strong>Priority:</strong> 1: High - 5: Low </label><br>
@@ -130,32 +129,27 @@
                 </mdb-form-control>
             </div>
         </div>
-        <div id="locationAndRecurrence" class="form-row">
+        <div id="locationRecurrenceEvent" class="form-row">
             <mdb-form-control class="form-outline">
-                <input mdbInput type="text" id="location" formControlName="location"
-                       class="form-control">
+                <input mdbInput type="text" id="location" class="form-control">
                 <label mdbLabel class="form-label" for="location"> <strong>Location</strong> </label>
             </mdb-form-control>
-            <div mdbDropdown class="dropdown pl-1">
+            <div mdbDropdown id="selectRecurrence" class="dropdown">
                 <button class="btn btn-primary dropdown-toggle"
                         type="button"
                         id="recurrenceDropdown"
-                        data-mdb-toggle="dropdown"
                         aria-expanded="false"
                         mdbDropdownToggle
+                        #dropdown
                 >
                     Recurrence
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="recurrenceDropdown">
+                <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="recurrenceDropdown">
                         <label style="color:black"><input type="radio" name="recurence" id="one"> One Time</label>
-                        <br>
                         <label style="color:black"><input type="radio" name="recurence" id="weekly"> Weekly</label>
-                        <br>
                         <label style="color:black"><input type="radio" name="recurence" id="biweekly"> Biweekly</label>
                 </ul>
             </div>
-        </div>
-        <div class="form-row py-3">
             <div id="eventType" mdbDropdown class="dropdown pr-1">
                 <button
                         class="btn btn-primary dropdown-toggle"
@@ -176,29 +170,25 @@
                     </form>
                 </ul>
             </div>
-            <div id="busy" mdbDropdown class="form-outline pl-1">
-                <button
-                        class="btn btn-primary dropdown-toggle"
-                        type="button"
-                        id="busyDropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        mdbDropdownToggle>
-                    Busy?
-                </button>
-                <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="busyDropdown">
-                    <form>
-                        <label style="color:black"><input type="radio" name="busy" id="yes">  Yes</label>
-                        <br>
-                        <label style="color:black"><input type="radio" name="busy" id="no">  No</label>
-                    </form>
-                </ul>
+            <div id="busy" class="form-outline pl-1">
+                <div class="form-check">
+                    <input
+                            mdbCheckbox
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="busyCheck"
+                    />
+                    <label class="form-check-label" for="busyCheck">
+                        Busy?
+                    </label>
+                </div>
+
             </div>
         </div>
         <div id="eventDescription" class="form-outline">
             <mdb-form-control class="form-outline">
-                <input mdbInput type="text" id="description" formControlName="description"
-                       class="form-control">
+                <input mdbInput type="text" id="description" class="form-control">
                 <label mdbLabel class="form-label" for="description"><strong>Description</strong></label>
             </mdb-form-control>
         </div>

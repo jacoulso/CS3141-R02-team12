@@ -20,6 +20,7 @@ import { NewEventModalComponent } from './modal/new-event-modal/new-event-modal.
 import {MdbCheckboxModule} from "mdb-angular-ui-kit/checkbox";
 import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
 import {MdbRadioModule} from "mdb-angular-ui-kit/radio";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {MdbRadioModule} from "mdb-angular-ui-kit/radio";
         MdbModalModule,
         MdbCheckboxModule,
         MdbDropdownModule,
-        MdbRadioModule
+        MdbRadioModule,
+        BrowserAnimationsModule
     ],
   providers: [
       ApiserviceService,

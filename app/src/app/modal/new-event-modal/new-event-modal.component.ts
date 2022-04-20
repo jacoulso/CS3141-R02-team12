@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {SenderService} from "../../sender.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MdbModalRef} from "mdb-angular-ui-kit/modal";
+import {MdbDropdownDirective} from "mdb-angular-ui-kit/dropdown";
 
 @Component({
   selector: 'app-new-event-modal',
@@ -10,9 +11,8 @@ import {MdbModalRef} from "mdb-angular-ui-kit/modal";
   styleUrls: ['./new-event-modal.component.scss']
 })
 export class NewEventModalComponent implements OnInit {
-
+  @ViewChild('dropdown') dropdown!:MdbDropdownDirective
   newEventForm!: FormGroup;
-  show : boolean;
 
   constructor(
       private router: Router,
@@ -20,7 +20,6 @@ export class NewEventModalComponent implements OnInit {
       private formBuilder: FormBuilder,
       public modalRef: MdbModalRef<NewEventModalComponent>,
       ) {
-    this.show = false;
   }
 
   ngOnInit(): void {
@@ -32,7 +31,6 @@ export class NewEventModalComponent implements OnInit {
     },
     );
   }
-
   getNewEvent() {
     let title = (document.getElementById("title") as HTMLInputElement).value;
     if (title) {
@@ -64,6 +62,7 @@ export class NewEventModalComponent implements OnInit {
       this.service.sendString("url");
     }
   }
+
 
 
 }
