@@ -21,6 +21,8 @@ import {MdbCheckboxModule} from "mdb-angular-ui-kit/checkbox";
 import {MdbDropdownModule} from "mdb-angular-ui-kit/dropdown";
 import {MdbRadioModule} from "mdb-angular-ui-kit/radio";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { SocialModalComponent } from './modal/social-modal/social-modal.component';
+import { ImportModalComponent } from './modal/import-modal/import-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     CalendarComponent,
     SignUpComponent,
     NewEventModalComponent,
+    SocialModalComponent,
+    ImportModalComponent,
   ],
     imports: [
         BrowserModule,

@@ -23,16 +23,14 @@
             </button>
             <div class="collapse" id="home-collapse">
                 <div class="form-check">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <input
-                            mdbRadio
+                            mdbCheckbox
                             class="form-check-input"
                             type="checkbox"
                             name="flexcheckDefault"
-                            id="flexCheckDefault1"
+                            id="flexCheckDefault"
                         />
-                        <label class="form-check-label" for="flexCheckDefault1"> Default Check </label>
-                    </ul>
+                        <label class="form-check-label" for="flexCheckDefault"> Me CaledARRR! </label>
                 </div>
             </div>
         </li>
@@ -43,24 +41,14 @@
             </button>
             <div class="collapse" id="dashboard-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark rounded">Overview</a></li>
-                    <li><a href="#" class="link-dark rounded">Weekly</a></li>
-                    <li><a href="#" class="link-dark rounded">Monthly</a></li>
-                    <li><a href="#" class="link-dark rounded">Annually</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1">
-            <button class="btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#orders-collapse" aria-expanded="false">
-                Orders
-            </button>
-            <div class="collapse" id="orders-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark rounded">New</a></li>
-                    <li><a href="#" class="link-dark rounded">Processed</a></li>
-                    <li><a href="#" class="link-dark rounded">Shipped</a></li>
-                    <li><a href="#" class="link-dark rounded">Returned</a></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox">
+                        <label class="form-check-label text-black">John Jonhson</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox">
+                        <label class="form-check-label text-black">Sam Samson</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox">
+                        <label class="form-check-label  text-black">Carl Carlson</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox">
+                        <label class="form-check-label  text-black">Phil Philson</label></li>
                 </ul>
             </div>
         </li>
@@ -71,10 +59,9 @@
             </button>
             <div class="collapse" id="account-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-dark rounded">New...</a></li>
-                    <li><a href="#" class="link-dark rounded">Profile</a></li>
+                    <li><a href="#" class="link-dark rounded">Manage friends</a></li>
                     <li><a href="#" class="link-dark rounded">Settings</a></li>
-                    <li><a href="#" class="link-dark rounded">Sign out</a></li>
+                    <button class="btn btn-primary" (click)="openImportModal()"> Import calendar</button>
                 </ul>
             </div>
         </li>
