@@ -19,16 +19,15 @@ USE smartcal_mysqldb;
 SET FOREIGN_KEY_CHECKS = 0; -- Disable warnings while we kill everything
 
 -- Procedures
-DROP PROCEDURE IF EXISTS display_type;
-DROP PROCEDURE IF EXISTS display_cal;
-DROP PROCEDURE IF EXISTS next_time;
+DROP PROCEDURE IF EXISTS purge_Times;
+DROP PROCEDURE IF EXISTS find_Times;
 DROP PROCEDURE IF EXISTS check_All;
-DROP PROCEDURE IF EXISTS is_available;
+DROP PROCEDURE IF EXISTS is_Available;
 DROP PROCEDURE IF EXISTS is_DND;
 DROP PROCEDURE IF EXISTS is_Event;
-DROP PROCEDURE IF EXISTS friend_search;
-DROP PROCEDURE IF EXISTS user_create;
-DROP PROCEDURE IF EXISTS cal_create;
+DROP PROCEDURE IF EXISTS friend_Search;
+DROP PROCEDURE IF EXISTS user_Create;
+DROP PROCEDURE IF EXISTS cal_Create;
 DROP PROCEDURE IF EXISTS link_UserCal;
 DROP PROCEDURE IF EXISTS create_DND;
 DROP PROCEDURE IF EXISTS day_Convert;
@@ -44,6 +43,7 @@ DROP TABLE IF EXISTS EventColorLookup;
 DROP TABLE IF EXISTS guestLookup;
 DROP TABLE IF EXISTS friendLookup;
 DROP TABLE IF EXISTS UserFriends;
+DROP TABLE IF EXISTS PossibleTimes;
 
 -- Tables
 DROP TABLE IF EXISTS Users;
@@ -174,28 +174,49 @@ CREATE TABLE UserFriends (
     PRIMARY KEY (friendID, friendNum)
 );
 
+-- Create an empty table to store potential meeting times
+CREATE TABLE PossibleTimes (
+	startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    timeNum INT NOT NULL UNIQUE AUTO_INCREMENT,
+    numConflicts INT,
+    conflictPriority INT,
+    
+    PRIMARY KEY (startTime, endTime, timeNum)
+);
+
 ---------------------------------------------------------------------------- 
 --  PROCEDURES                                                            --
 ----------------------------------------------------------------------------
 delimiter //
 
--- Display a certain event type
-CREATE PROCEDURE display_type()
+-- Call after meeting times are proposed to purge the placeholder table
+CREATE PROCEDURE purge_times()
 	BEGIN
-    
-    END //
-
--- Display all selected event types for a calendar
-CREATE PROCEDURE display_cal()
-	BEGIN
-    
+    DELETE FROM PossibleTimes;
+    ALTER TABLE PossibleTimes AUTO_INCREMENT = 1;
     END //
     
 -- Find the next possible meeting time
-CREATE PROCEDURE next_Time(IN userID INT, IN currentTime DATETIME, IN includeFriends BOOLEAN)
+CREATE PROCEDURE find_Times(IN userID INT, IN includeFriends BOOLEAN, IN duration TIME, OUT numTimes INT)
 	BEGIN
-    DECLARE allAvail BOOLEAN DEFAULT true;
-    
+    DECLARE allAvailStart BOOLEAN DEFAULT true;
+    DECLARE allAvailEnd BOOLEAN DEFAULT true;
+    DECLARE startTime DATETIME DEFAULT now();
+    DECLARE endTime DATETIME;
+    DECLARE numTimes INT DEFAULT 0;
+    SET startTime = concat(date_add(date(startTime), INTERVAL 1 DAY), '00:00:00');
+    SET endTime = concat(date(startTime), duration);
+    WHILE date(endTime) < date_add(date(now()), INTERVAL 8 DAY) DO
+		SET allAvailStart = true;
+        SET allAvailEnd = true;
+        CALL check_All(userID, startTime, includeFriends, allAvailStart);
+        CALL check_All(userID, endTime, includeFriends, allAvailEnd);
+        IF (allAvailStart & allAvailEnd) THEN
+			INSERT INTO PossibleTimes values(startTime, endTime, 0, 0);
+            SET numTimes = numTimes + 1;
+        END IF;
+    END WHILE;
     END //
     
 -- Check the availability of the user and optionally all their friends
@@ -268,16 +289,16 @@ CREATE PROCEDURE friend_Search(IN keyword varchar(128))
     END //
     
 -- Create a user and their default calendar
-CREATE PROCEDURE user_create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
+CREATE PROCEDURE user_Create(IN newName varchar(100), IN newPass varchar(256), IN newMail varchar(256))
 	BEGIN
     DECLARE userID INT DEFAULT 0;
     INSERT INTO Users (username, password, email) values(newName, newPass, newMail);
     SELECT LAST_INSERT_ID() INTO userID;
-    CALL cal_create(userID, newName);
+    CALL cal_Create(userID, newName);
     END //
 
 -- Insert a new calendar into the table and link it to the provided userID
-CREATE PROCEDURE cal_create(IN userID INT, IN calTitle varchar(256))
+CREATE PROCEDURE cal_Create(IN userID INT, IN calTitle varchar(256))
 	BEGIN
     INSERT INTO Calendars (title) values(calTitle);
     CALL link_UserCal(userID, calTitle);
