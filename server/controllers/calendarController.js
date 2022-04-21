@@ -8,7 +8,7 @@ const db = mysql.createConnection(config.db);
 // Create a new calendar given a new calendar title
 exports.createNewCalendar = async function (req, res) {
     console.log(`***New calendar creation requested...`);
-    const { title } = req.body;
+    const { uID, title } = req.body;
 
     if (!title) { // sanity check
         return res.status(422).json({ 'error': 'Please provide a valid title.' });
@@ -21,7 +21,7 @@ exports.createNewCalendar = async function (req, res) {
             if (err) console.log(`Error connecting to ${config.db.database}: ${err}`);
         });
 
-        db.query(query.createNewCalendar, [title], async function (err, results) {
+        db.query(query.createNewCalendar, [uID, title], async function (err, results) {
             if (err) console.log(`*****${err}`);
 
             if (results != null) { // If we found something, attempt to send json packet

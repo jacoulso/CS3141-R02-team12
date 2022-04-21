@@ -87,8 +87,9 @@ export class ApiserviceService {
   }
 
   // Given a uID and a title, ask the server to create a new calendar with it
-  public createCalendarForUser(uID: any, title: any): Observable<any> {
-    return this._http.post(this.calendarPath + "/calendar", { uID, title } );
+  public createCalendarForUser(body: any): Observable<any> {
+    console.log(body);
+    return this._http.post(this.calendarPath + "/create", body );
   }
 
 

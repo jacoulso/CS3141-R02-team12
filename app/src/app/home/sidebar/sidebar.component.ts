@@ -5,6 +5,7 @@ import {EventModalComponent} from "../../event-modal/event-modal.component";
 import {NewEventModalComponent} from "../../modal/new-event-modal/new-event-modal.component";
 import {ImportModalComponent} from "../../modal/import-modal/import-modal.component";
 import {SocialModalComponent} from "../../modal/social-modal/social-modal.component";
+import {NewcalModalComponent} from "../../modal/newcal-modal/newcal-modal.component";
 import { ApiserviceService } from 'src/app/apiservice.service';
 
 
@@ -19,19 +20,22 @@ export class SidebarComponent implements OnInit {
 
   eventModalRef: MdbModalRef<EventModalComponent> | null = null;
 
-  calendars = ''; // for keeping our json calendar data, TODO: this should be an array, but we're not there yet lol...
+  calendars = []; // for keeping our json calendar data, TODO: this should be an array, but we're not there yet lol...
   
   constructor(
       private modalService: MdbModalService,
       private service:ApiserviceService
   ) { }
   
+  // Modal controls
   openEvent() {
     this.eventModalRef = this.modalService.open(EventModalComponent);
   }
-
   openNewEventModal() {
     this.modalRef = this.modalService.open(NewEventModalComponent)
+  }
+  openNewCalModal() {
+    this.modalRef = this.modalService.open(NewcalModalComponent)
   }
   openImportModal() {
     this.modalRef = this.modalService.open(ImportModalComponent)
@@ -40,17 +44,14 @@ export class SidebarComponent implements OnInit {
     this.modalRef = this.modalService.open(SocialModalComponent)
   }
 
+  // Calendar loading 
   ngOnInit(): void {
-    console.log(`Before load ==>`, this.calendars);
     this.loadAllCalendars();
-    console.log(`After load ==>`, this.calendars);
   }
 
   loadAllCalendars(): void {
     const ud = this.service.getUID();
     this.service.getAllCalendars(ud).subscribe( (res) => {
-      console.log(res.data[0].title);
-      this.calendars = res.data[0].title;
       localStorage.setItem('user_cals', JSON.stringify(res.data));;
     })
     this.loadCalendarTitles(); // this has to wait on the load calendar promise...
