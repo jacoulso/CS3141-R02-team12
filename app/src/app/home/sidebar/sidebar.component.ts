@@ -3,6 +3,8 @@ import $ from 'jquery';
 import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {EventModalComponent} from "../../event-modal/event-modal.component";
 import {NewEventModalComponent} from "../../modal/new-event-modal/new-event-modal.component";
+import {ImportModalComponent} from "../../modal/import-modal/import-modal.component";
+import {SocialModalComponent} from "../../modal/social-modal/social-modal.component";
 
 
 @Component({
@@ -26,5 +28,11 @@ export class SidebarComponent {
 
   openNewEventModal() {
     this.modalRef = this.modalService.open(NewEventModalComponent)
+  }
+  openImportModal() {
+    this.modalRef = this.modalService.open(ImportModalComponent)
+  }
+  openSocialsModal() {
+    this.modalRef = this.modalService.open(SocialModalComponent)
   }
 }
