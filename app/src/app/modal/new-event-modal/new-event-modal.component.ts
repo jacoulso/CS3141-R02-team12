@@ -31,9 +31,9 @@ export class NewEventModalComponent implements OnInit {
           // eID is handled internally
           creatorID: this.service.getUID(),
           calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
-          colorID: [''],  // #### UNUSED IN FORM ####
+          colorID: [1],  // #### UNUSED IN FORM ####
           title: ['', Validators.required],
-          isAllDay: [''],
+          isAllDay: [false],
           dateTimeStart: ['', Validators.required],
           dateTimeEnd: ['', Validators.required],
           duration: [''],
@@ -42,7 +42,7 @@ export class NewEventModalComponent implements OnInit {
           priorityID: ['', Validators.required],
           description: ['', Validators.required],
           recurrence: [''],  // #### UNUSED IN FORM ####
-          recurrenceEndDate: [''],  // #### UNUSED IN FORM ####
+          recurrenceEndDate: ['2022-04-30 10:00:00'],  // #### UNUSED IN FORM ####
         },
     );
   }

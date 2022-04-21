@@ -112,14 +112,13 @@ exports.addEvent = async function (req, res) {
     //sanity check pls, only on what matters th
     if (!creatorID)     return res.status(422).json({ 'error': `Please provide a valid creatorID.` });
     if (!calendarID)    return res.status(422).json({ 'error': `Please provide a valid calendarID.`});
-    if (!colorID)       return res.status(422).json({ 'error': `Please provide a valid colorID.`});
+    // if (!colorID)       return res.status(422).json({ 'error': `Please provide a valid colorID.`});
     if (!title)         return res.status(422).json({ 'error': `Please provide a valid title.`});
-    if (isAllDay== null)return res.status(422).json({ 'error': `Please provide a valid isAllDay.`});
-    if (!dateTimeStart) return res.status(422).json({ 'error': `Please provide a valid dateTimeStart.`});
+    if (isAllDay == null)return res.status(422).json({ 'error': `Please provide a valid isAllDay.`});
     if (!eventTypeID)   return res.status(422).json({ 'error': `Please provide a valid eventTypeID.`});
-    if (!priorityID)    return res.status(422).json({ 'error': `Please provide a valid priorityID.`});
+    // if (!priorityID)    return res.status(422).json({ 'error': `Please provide a valid priorityID.`});
     if (!description)   return res.status(422).json({ 'error': `Please provide a valid description.`});
-    if (!recurrence)    return res.status(422).json({ 'error': `Please provide a valid recurrence.`});
+    // if (!recurrence)    return res.status(422).json({ 'error': `Please provide a valid recurrence.`});
 
     try { // If by the grace of the gods we passed the sanity check, create the thing
         console.log(`***End of sanity check! Connecting to ${config.db.database}...`);

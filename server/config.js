@@ -1,5 +1,3 @@
-//require('.env').config({path:__dirname+'/server/.env'});
-
 const config = {
     db: {
       /* don't expose password or any sensitive info, done only for demo */
@@ -10,7 +8,7 @@ const config = {
     },
     jwt: {
       saltRounds: 13,  // ~20 hashes/s
-      secret: 'megaWorm' // key for signing outgoing tokens
+      secret: 'megaWorm' // key for signing outgoing tokens (In prod, this is an environment variable)
     }
   };
   module.exports = config;
