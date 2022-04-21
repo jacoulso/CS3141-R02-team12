@@ -7,20 +7,8 @@ import { ApiserviceService } from '../apiservice.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   
-  constructor(private service:ApiserviceService) { }
-
-
-  ngOnInit(): void {
-    this.loadAllCalendars();
-  }
-
-  loadAllCalendars(): void {
-    const ud = this.service.getUID();
-    this.service.getAllCalendars(ud).subscribe( (res) => {
-      localStorage.setItem('user_cals', JSON.stringify(res.data));;
-    })
-  }
+  constructor() { }
 
 }

@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {SenderService} from "../../sender.service";
-import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MdbModalRef} from "mdb-angular-ui-kit/modal";
-import {MdbDropdownDirective} from "mdb-angular-ui-kit/dropdown";
-import {ApiserviceService} from "../../apiservice.service";
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { SenderService } from "../../sender.service";
+import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MdbModalRef } from "mdb-angular-ui-kit/modal";
+import { MdbDropdownDirective } from "mdb-angular-ui-kit/dropdown";
+import { ApiserviceService } from "../../apiservice.service";
 
 @Component({
   selector: 'app-new-event-modal',
@@ -12,54 +12,54 @@ import {ApiserviceService} from "../../apiservice.service";
   styleUrls: ['./new-event-modal.component.scss']
 })
 export class NewEventModalComponent implements OnInit {
-  @ViewChild('dropdown') dropdown!:MdbDropdownDirective
+  @ViewChild('dropdown') dropdown!: MdbDropdownDirective
   newEventForm!: FormGroup;
   errors: any = [];
   notify!: string;
 
   constructor(
-      private router: Router,
-      private sender: SenderService,
-      private formBuilder: FormBuilder,
-      private service: ApiserviceService,
-      public modalRef: MdbModalRef<NewEventModalComponent>,
-      ) {
+    private router: Router,
+    private sender: SenderService,
+    private formBuilder: FormBuilder,
+    private service: ApiserviceService,
+    public modalRef: MdbModalRef<NewEventModalComponent>,
+  ) {
   }
 
   ngOnInit(): void {
     this.newEventForm = this.formBuilder.group({
-          // eID is handled internally
-          creatorID: this.service.getUID(),
-          calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
-          colorID: [1],  // #### UNUSED IN FORM ####
-          title: ['', Validators.required],
-          isAllDay: [false],
-          dateTimeStart: ['', Validators.required],
-          dateTimeEnd: ['', Validators.required],
-          duration: [''],
-          location: ['', Validators.required],
-          eventTypeID: ['', Validators.required],  // #### UNUSED IN FORM ####
-          priorityID: ['', Validators.required],
-          description: ['', Validators.required],
-          recurrence: [''],  // #### UNUSED IN FORM ####
-          recurrenceEndDate: ['2022-04-30 10:00:00'],  // #### UNUSED IN FORM ####
-        },
+      // eID is handled internally
+      creatorID: this.service.getUID(),
+      calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
+      colorID: [1],  // #### UNUSED IN FORM ####
+      title: ['', Validators.required],
+      isAllDay: [false],
+      dateTimeStart: ['', Validators.required],
+      dateTimeEnd: ['', Validators.required],
+      duration: [''],
+      location: ['', Validators.required],
+      eventTypeID: ['', Validators.required],  // #### UNUSED IN FORM ####
+      priorityID: ['', Validators.required],
+      description: ['', Validators.required],
+      recurrence: [''],  // #### UNUSED IN FORM ####
+      recurrenceEndDate: ['2022-04-30 10:00:00'],  // #### UNUSED IN FORM ####
+    },
     );
   }
   addEvent() {
     console.log(`Saving event...`);
     this.errors = []; // reset justin case
     this.service.addEvent(this.newEventForm.value).subscribe((res) => {
-          // Code for successful event add goes here...
-          console.log(res);
-        },
-        (errorResponse) => {
-          this.errors.push(errorResponse.error.error);
-        });
+      // Code for successful event add goes here...
+      console.log(res);
+    },
+      (errorResponse) => {
+        this.errors.push(errorResponse.error.error);
+      });
   }
-    getActiveCalendar(): any {
-        return JSON.parse(localStorage.getItem("user_cals")!)[0].cID; // definite(ly) json data.. compiler gets mad if we don't tell it otherwise
-    }
+  getActiveCalendar(): any {
+    return JSON.parse(localStorage.getItem("user_cals")!)[0].cID; // definite(ly) json data.. compiler gets mad if we don't tell it otherwise
+  }
 
   getNewEvent() {
     let title = (document.getElementById("title") as HTMLInputElement).value;
