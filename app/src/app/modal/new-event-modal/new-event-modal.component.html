@@ -97,22 +97,20 @@
 
         </div>
         <div id="eventTime" class="form py-2">
-<!--            <mdb-form-control class="form-outline">-->
-<!--                <label class="form-check-label pr-2" for="showRecTimes">Show Recommended Times?</label>-->
-<!--                <input-->
-<!--                        mdbCheckbox-->
-<!--                        class="form-check-input"-->
-<!--                        type="checkbox"-->
-<!--                        value=""-->
-<!--                        id="showRecTimes"-->
-<!--                        name="rec"-->
-<!--                        #ShowRecTimes-->
-<!--                />-->
-<!--                <div *ngIf="ShowRecTimes.checked">-->
-<!--                    <label mdbLabel for="duration" class="pr-2"> Duration? (min)</label>-->
-<!--                    <input mdbInput id="duration" type="text-sm" formControlName="duration">-->
-<!--                </div>-->
-<!--            </mdb-form-control>-->
+                <input
+                        mdbCheckbox
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="showRecTimes"
+                        #ShowRecTimes
+                />
+                <label class="form-check-label pr-2" for="showRecTimes">Show Recommended Times?</label>
+
+                <div *ngIf="ShowRecTimes.checked">
+                    <label mdbLabel for="duration" class="pr-2"> Duration? (min)</label>
+                    <input mdbInput id="duration" type="text-sm" formControlName="duration">
+                </div>
 
             <div id="selectStartTime" class="form-row">
                 <mdb-form-control class="form-outline">
