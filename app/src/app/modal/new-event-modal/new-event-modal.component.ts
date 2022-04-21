@@ -30,19 +30,19 @@ export class NewEventModalComponent implements OnInit {
     this.newEventForm = this.formBuilder.group({
           // eID is handled internally
           creatorID: this.service.getUID(),
-          // calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
-          colorID: ['', Validators.required],  // #### UNUSED IN FORM ####
+          calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
+          colorID: [''],  // #### UNUSED IN FORM ####
           title: ['', Validators.required],
-          isAllDay: ['', Validators.required],
+          isAllDay: [''],
           dateTimeStart: ['', Validators.required],
           dateTimeEnd: ['', Validators.required],
-          duration: ['', Validators.required],
+          duration: [''],
           location: ['', Validators.required],
           eventTypeID: ['', Validators.required],  // #### UNUSED IN FORM ####
           priorityID: ['', Validators.required],
           description: ['', Validators.required],
-          recurrence: ['', Validators.required],  // #### UNUSED IN FORM ####
-          recurrenceEndDate: ['', Validators.required],  // #### UNUSED IN FORM ####
+          recurrence: [''],  // #### UNUSED IN FORM ####
+          recurrenceEndDate: [''],  // #### UNUSED IN FORM ####
         },
     );
   }
@@ -57,6 +57,9 @@ export class NewEventModalComponent implements OnInit {
           this.errors.push(errorResponse.error.error);
         });
   }
+    getActiveCalendar(): any {
+        return JSON.parse(localStorage.getItem("user_cals")!)[0].cID; // definite(ly) json data.. compiler gets mad if we don't tell it otherwise
+    }
 
   getNewEvent() {
     let title = (document.getElementById("title") as HTMLInputElement).value;
