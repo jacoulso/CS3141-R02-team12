@@ -191,6 +191,8 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAllEvents();
+
+    this.currentEvents += this.displayAllEvents();
   }
 
   // ---- API Service -----------------------------------------
@@ -214,12 +216,29 @@ export class CalendarComponent implements OnInit {
   }
 
   // Unload all events in the cal_name_events session data and display them on the calendar
-  displayAllEvents() {
-
+  displayAllEvents(): any {
+    const userCalData = localStorage.getItem('user_cals');
+    const uID = this.apiService.getUID();
+    JSON.parse(userCalData!).forEach((c: any) => {
+      this.displayCalEvents(uID, c);
+    });
   }
 
-  // 
-  displayCalEvents(cID: any) {
+  // Breaks the array of events out from the calendar data
+  displayCalEvents(uID: any, c: any) {
+    console.log(`Loading events for calendar '${c.title}'...`);
+    this.apiService.getCalendarEvents(uID, c.cID).subscribe( (res) => {
+      console.log(res);
+      const events = sessionStorage.getItem(`cal_${c.title}_events`);
+      JSON.parse(events!).forEach( (e: any) => {
+        this.displayEvent(e);
+      })
+    })
+  }
 
+  // Adds an individual event to the calendar 
+  displayEvent(e: any) {
+    console.log(e.title, e.priorityID, e.dateTimeStart, e.dateTimeEnd, e.isAllDay);
+    this.add(e.title, e.priorityID, e.dateTimeStart, e.dateTimeEnd, e.isAllDay);
   }
 }
