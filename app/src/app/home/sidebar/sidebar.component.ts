@@ -8,6 +8,7 @@ import { SocialModalComponent } from "../../modal/social-modal/social-modal.comp
 import { NewcalModalComponent } from "../../modal/newcal-modal/newcal-modal.component";
 import { ApiserviceService } from 'src/app/apiservice.service';
 import {ManageFriendsModalComponent} from "../../modal/manage-friends-modal/manage-friends-modal.component";
+import {SenderService} from "../../sender.service";
 
 
 @Component({
@@ -32,7 +33,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private modalService: MdbModalService,
-    private service: ApiserviceService
+    private service: ApiserviceService,
+    private sender: SenderService
   ) { }
 
   // Modal controls
@@ -84,4 +86,12 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  addJohn() {
+    if ((document.getElementById("john") as HTMLInputElement).checked) {
+      this.sender.addJohn("add");
+    } else {
+      this.sender.addJohn("remove");
+    }
+  }
+  
 }

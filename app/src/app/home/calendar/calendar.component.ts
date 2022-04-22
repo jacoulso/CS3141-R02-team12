@@ -54,6 +54,13 @@ export class CalendarComponent implements OnInit {
         this.uploadICS(this.service.url);
       }
     })
+    this.service.john.subscribe(value => {
+      if(value == "add") {
+        this.addJohn();
+      } else {
+        this.removeJohn();
+      }
+    })
   }
 
   public ics = '';
@@ -116,8 +123,10 @@ export class CalendarComponent implements OnInit {
       this.modalRef = this.modalService.open(PriorityModalComponent);
       this.modalRef.onClose.subscribe((message: number) => {
         calendarApi.setExtendedProp("priority", message);
-        calendarApi.setProp("backgroundColor", "green");
-        calendarApi.setProp("borderColor", "green");
+        if (calendarApi.extendedProps['priority']) {
+          calendarApi.setProp("backgroundColor", "green");
+          calendarApi.setProp("borderColor", "green");
+        }
         //Update database
       }
       )
@@ -187,6 +196,33 @@ export class CalendarComponent implements OnInit {
     }
     );
     console.log("passed");
+  }
+  
+  exampleEvents = {
+      events: [
+        {
+          title: 'John1',
+          start: '2022-04-22',
+          id: "23"
+        },
+        {
+          title: 'John2',
+          start: '2022-04-23',
+          id: "24"
+        }
+
+      ]
+  }
+  
+  addJohn() {
+    let calendar = this.calendarComponent.getApi();
+    calendar.addEventSource(this.exampleEvents);
+  }
+
+  removeJohn() {
+    let calendar = this.calendarComponent.getApi();
+    calendar.getEventById("23")?.remove();
+    calendar.getEventById("24")?.remove();
   }
 
   ngOnInit(): void {
