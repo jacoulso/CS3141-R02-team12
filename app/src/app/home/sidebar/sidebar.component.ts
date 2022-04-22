@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import $ from 'jquery';
-import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
-import {EventModalComponent} from "../../event-modal/event-modal.component";
-import {NewEventModalComponent} from "../../modal/new-event-modal/new-event-modal.component";
-import {ImportModalComponent} from "../../modal/import-modal/import-modal.component";
-import {SocialModalComponent} from "../../modal/social-modal/social-modal.component";
-import {NewcalModalComponent} from "../../modal/newcal-modal/newcal-modal.component";
+import { MdbModalRef, MdbModalService } from "mdb-angular-ui-kit/modal";
+import { EventModalComponent } from "../../event-modal/event-modal.component";
+import { NewEventModalComponent } from "../../modal/new-event-modal/new-event-modal.component";
+import { ImportModalComponent } from "../../modal/import-modal/import-modal.component";
+import { SocialModalComponent } from "../../modal/social-modal/social-modal.component";
+import { NewcalModalComponent } from "../../modal/newcal-modal/newcal-modal.component";
 import { ApiserviceService } from 'src/app/apiservice.service';
 
 
@@ -20,13 +20,19 @@ export class SidebarComponent implements OnInit {
 
   eventModalRef: MdbModalRef<EventModalComponent> | null = null;
 
-  calendars = []; // for keeping our json calendar data, TODO: this should be an array, but we're not there yet lol...
-  
+  /*
+    The compiler has severe issues with null types. See https://www.typescriptlang.org/docs/handbook/basic-types.html#never
+    for more information on that. Essentially, it sees that the array is empty and the html *ngFor throws a fit saying that the data 
+    doesn't exist despite the fact that we promise to load data upon the component initialization. Work around: give it 
+    data that just gets overwritten immeditaley...
+  */
+  public calendars = [{title: 'MakeCompilerHappy'}]; 
+
   constructor(
-      private modalService: MdbModalService,
-      private service:ApiserviceService
+    private modalService: MdbModalService,
+    private service: ApiserviceService
   ) { }
-  
+
   // Modal controls
   openEvent() {
     this.eventModalRef = this.modalService.open(EventModalComponent);
@@ -49,20 +55,22 @@ export class SidebarComponent implements OnInit {
     this.loadAllCalendars();
   }
 
+  // Function to be called whenever you need to reload the list of calendars on the sidebar
   loadAllCalendars(): void {
     const ud = this.service.getUID();
-    this.service.getAllCalendars(ud).subscribe( (res) => {
-      localStorage.setItem('user_cals', JSON.stringify(res.data));;
+    this.service.getAllCalendars(ud).subscribe((res) => {
+      localStorage.setItem('user_cals', JSON.stringify(res.data[0])); // we dont need to store anything other than the calendar data
     })
-    this.loadCalendarTitles(); // this has to wait on the load calendar promise...
+    this.calendars = this.getActiveCalendars(); // this has to wait on the load calendar promise...
   }
 
-  loadCalendarTitles() {
-    this.calendars = this.getActiveCalendar();
-  }
-
-  getActiveCalendar(): any {
-    return JSON.parse(localStorage.getItem("user_cals")!)[0].title; // definite(ly) json data.. compiler gets mad if we don't tell it otherwise
+  // Parse all local calendars and return an array of titles
+  getActiveCalendars(): any {
+    return JSON.parse(localStorage.getItem("user_cals")!).map( (c: any) => {
+      return {
+        title: c.title 
+      }
+    }); 
   }
 
 }

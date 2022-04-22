@@ -33,7 +33,7 @@ export class NewcalModalComponent implements OnInit {
     this.errors = []; // reset justin case
     this.service.createCalendarForUser(this.newcalForm.value).subscribe((res) => {
       // Code for successful calendar add goes here...
-      if (res.successCode) { this.modalRef.close(); } 
+      if (res.successCode) { window.location.reload(); } // Cheat code to close the modal and reload all the calendars and events...
     },
       (errorResponse) => {
         this.errors.push(errorResponse.error.error);

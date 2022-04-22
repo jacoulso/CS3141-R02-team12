@@ -1,5 +1,5 @@
 const userQueries = {
-    getAllCalendars: "SELECT * FROM Calendars WHERE (SELECT cID FROM UserCalendarsLookup WHERE uID=?)",
+    getAllCalendars: "CALL cal_getAll (?)",
     getOneCalendar: "SELECT * FROM Calendars WHERE cID=?",
     createNewCalendar: "CALL cal_Create (?,?)",
     removeCalendar: ""

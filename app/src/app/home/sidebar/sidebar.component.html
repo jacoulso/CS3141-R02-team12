@@ -22,7 +22,7 @@
                 My Calendars
             </button>
             <div class="collapse" id="home-collapse">
-                <div class="form-check">
+                <div class="form-check" *ngFor="let c of calendars">
                         <input
                             mdbCheckbox
                             class="form-check-input"
@@ -30,9 +30,9 @@
                             name="flexcheckDefault"
                             id="flexCheckDefault"
                         />
-                        <label class="form-check-label" for="flexCheckDefault"> {{calendars}} </label>
-                        <button class="btn btn-primary" (click)="openNewCalModal()"> Add calendar</button>
+                        <label class="form-check-label" for="flexCheckDefault"> {{ c.title }}</label>
                 </div>
+                <button class="btn btn-primary" (click)="openNewCalModal()"> Add calendar</button>
             </div>
         </li>
         <li class="mb-1">

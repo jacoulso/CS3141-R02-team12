@@ -115,8 +115,8 @@ exports.getAllCalendars = async function (req, res) {
             if (err) console.log(`Error connecting to ${config.db.database}: ${err}`);
         });
 
-        db.query(query.getOneCalendar, [uID], async function (err, results) {
-            if (err) console.log(`*****${err}`);
+        db.query(query.getAllCalendars, [uID], async function (err, results) {
+            if (err) console.log(`*****${err}`)
 
             if (results != null) { // If we found something, attempt to send json packet
                 console.log(`***Found calendars for 'uID: ${uID}'.`);
@@ -131,7 +131,7 @@ exports.getAllCalendars = async function (req, res) {
                     message: "Query ran successfully.",
                     data: "User has no calendars. Are they real?", // pass back query results
                     successCode: false
-                });
+                }); 
             }
         });
     } catch (err) {

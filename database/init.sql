@@ -340,7 +340,7 @@ CREATE PROCEDURE day_Convert(INOUT dayWeek CHAR(1))
 -- Retrieve all calendars associated with a certain user
 CREATE PROCEDURE cal_getAll(IN userID INT)
 	BEGIN
-    SELECT cID FROM UserCalendarsLookup WHERE uID = userID;
+    SELECT * FROM Calendars AS C LEFT JOIN UserCalendarsLookup AS U ON c.cID=u.cID WHERE uID = userID;
     END //
 
 -- Retrieve information of a certain calendar of a given user
