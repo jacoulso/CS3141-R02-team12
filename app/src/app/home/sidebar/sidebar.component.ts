@@ -86,11 +86,46 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  addJohn() {
-    if ((document.getElementById("john") as HTMLInputElement).checked) {
-      this.sender.addJohn("add");
+  addSam() {
+    if ((document.getElementById("Sam") as HTMLInputElement).checked) {
+      this.sender.addSam("add");
     } else {
-      this.sender.addJohn("remove");
+      this.sender.addSam("remove");
+    }
+  }
+  addJustin() {
+    if ((document.getElementById("Justin") as HTMLInputElement).checked) {
+      this.sender.addJustin("add");
+    } else {
+      this.sender.addJustin("remove");
+    }
+  }
+  addRyan() {
+    if ((document.getElementById("Ryan") as HTMLInputElement).checked) {
+      this.sender.addRyan("add");
+    } else {
+      this.sender.addRyan("remove");
+    }
+  }
+  addArtem() {
+    if ((document.getElementById("Artem") as HTMLInputElement).checked) {
+      this.sender.addArtem("add");
+    } else {
+      this.sender.addArtem("remove");
+    }
+  }
+  addSchool() {
+    if ((document.getElementById("School") as HTMLInputElement).checked) {
+      this.sender.addSchool("add");
+    } else {
+      this.sender.addSchool("remove");
+    }
+  }
+  addWork() {
+    if ((document.getElementById("Work") as HTMLInputElement).checked) {
+      this.sender.addWork("add");
+    } else {
+      this.sender.addWork("remove");
     }
   }
   

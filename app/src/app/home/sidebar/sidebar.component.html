@@ -22,16 +22,14 @@
                 My Calendars
             </button>
             <div class="collapse" id="home-collapse">
-                <div class="form-check" *ngFor="let c of calendars">
-                        <input
-                            mdbCheckbox
-                            class="form-check-input"
-                            type="checkbox"
-                            name="flexcheckDefault"
-                            id="flexCheckDefault"
-                        />
-                        <label class="form-check-label text-black" for="flexCheckDefault"> {{ c.title }}</label>
-                </div>
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Jacoulso">
+                        <label class="form-check-label text-black">Jacoulso</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Work" (click)="addWork()">
+                        <label class="form-check-label text-black">Work</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="School" (click)="addSchool()">
+                        <label class="form-check-label  text-black">School</label></li>
+                </ul>
                 <button class="btn btn-primary" (click)="openNewCalModal()"> Add calendar</button>
             </div>
         </li>
@@ -42,14 +40,14 @@
             </button>
             <div class="collapse" id="dashboard-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="john" (click)="addJohn()">
-                        <label class="form-check-label text-black">John Jonhson</label></li>
-                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="sam">
-                        <label class="form-check-label text-black">Sam Samson</label></li>
-                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="carl">
-                        <label class="form-check-label  text-black">Carl Carlson</label></li>
-                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="phil">
-                        <label class="form-check-label  text-black">Phil Philson</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Justin" (click)="addJustin()">
+                        <label class="form-check-label text-black">Jlmillim</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Sam" (click)="addSam()">
+                        <label class="form-check-label text-black">Sruss</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Artem" (click)="addArtem()">
+                        <label class="form-check-label  text-black">Asharkot</label></li>
+                    <li><input mdbCheckbox class="form-check-input" type="checkbox" id="Ryan" (click)="addRyan()">
+                        <label class="form-check-label  text-black">Rccole</label></li>
                 </ul>
                 <button class="btn btn-primary" (click)="openManageFriendsModal()"> Manage Friends</button>
             </div>

@@ -17,7 +17,14 @@ export class SenderService {
   event1: Subject<any> = new Subject();
   event2: Subject<any> = new Subject();
   event3: Subject<any> = new Subject();
-  john: Subject<any> = new Subject();
+  Sam: Subject<any> = new Subject();
+  Justin: Subject<any> = new Subject();
+  Artem: Subject<any> = new Subject();
+  Ryan: Subject<any> = new Subject();
+  School: Subject<any> = new Subject();
+  Work: Subject<any> = new Subject();
+
+
 
   addEvent(value: any) {
     this.event1.next(value);
@@ -31,8 +38,23 @@ export class SenderService {
     this.event3.next(value);
   }
   
-  addJohn(value: any) {
-    this.john.next(value);
+  addSam(value: any) {
+    this.Sam.next(value);
+  }
+  addJustin(value: any) {
+    this.Justin.next(value);
+  }
+  addArtem(value: any) {
+    this.Artem.next(value);
+  }
+  addRyan(value: any) {
+    this.Ryan.next(value);
+  }
+  addSchool(value: any) {
+    this.School.next(value);
+  }
+  addWork(value: any) {
+    this.Work.next(value);
   }
 
   constructor() {
