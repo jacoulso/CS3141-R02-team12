@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiserviceService } from '../apiservice.service';
-import {MdbValidationModule} from "mdb-angular-ui-kit/validation";
-import {MdbFormsModule} from "mdb-angular-ui-kit/forms";
+import { MdbValidationModule } from "mdb-angular-ui-kit/validation";
+import { MdbFormsModule } from "mdb-angular-ui-kit/forms";
 import {
   AbstractControl,
   FormBuilder,
@@ -12,7 +12,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import {AppRoutingModule, routingComponents} from "../app-routing.module";
+import { AppRoutingModule, routingComponents } from "../app-routing.module";
 
 @Component({
   selector: 'app-sign-up',
@@ -25,7 +25,7 @@ export class SignUpComponent implements OnInit {
   submitted = false;
   errors: any = [];
 
-  constructor( private router:Router, private formBuilder: FormBuilder, private service:ApiserviceService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private service: ApiserviceService) {
 
   }
 
@@ -40,31 +40,36 @@ export class SignUpComponent implements OnInit {
       validator: MustMatch('password', 'confirmPassword')
     });
   }
-  get f() {return this.registerForm?.controls;}
-  onSubmit(){
+
+  get f() { return this.registerForm?.controls; }
+
+  onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
-    }else{
+    } else {
       this.register();
     }
   }
-  onReset(){
-    this.submitted=false;
+
+  onReset() {
+    this.submitted = false;
     this.registerForm.reset();
   }
+
   register(): void {
     this.errors = [];
     this.service.register(this.registerForm.value)
-        .subscribe(() => {
-              this.router.navigate(['/login'], { queryParams: { registered: 'success' } });
-            },
-            (errorResponse) => {
-              this.errors.push(errorResponse.error.error); // notice how we never ever look at this array C;
-            });
+      .subscribe(() => {
+        this.router.navigate(['/login'], { queryParams: { registered: 'success' } });
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error); // notice how we never ever look at this array C;
+        });
   }
 }
+
 function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
     const control = formGroup.controls[controlName];
