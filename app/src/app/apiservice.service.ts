@@ -21,6 +21,7 @@ export class ApiserviceService {
   private apiUrl = "http://localhost:3000";
   private loginAuthPath = this.apiUrl + "/login";
   private registerPath = this.apiUrl + "/signup";
+  private updatePassPath = this.apiUrl + "/update";
   private calendarPath = this.apiUrl + "/calendars"
   private eventPath = this.apiUrl + "/events"
 
@@ -36,6 +37,10 @@ export class ApiserviceService {
 
   public register(userData: any): Observable<any> {
     return this._http.post(this.registerPath, userData);
+  }
+
+  public updatePassword(userData: any): Observable<any> {
+    return this._http.post(this.updatePassPath, userData);
   }
 
   public login(userData: any): Observable<any> {

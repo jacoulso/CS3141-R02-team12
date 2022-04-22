@@ -175,7 +175,66 @@ exports.delete = async function (req, res) {
 
 // Removes a specific calendar based on a given calendar ID
 exports.update = async function (req, res) {
-    res.status(200).json({ 'message': 'Backend not implemented yet.' });
+
+    const { uID, oldPassword, newPassword, confirmPassword } = req.body;
+
+    console.log(`***Attempted password change by user '${uID}'...`);
+    // Perform sanity checks
+    if (!uID) return res.status(422).json({ 'error': 'Please provide an uID.' });
+    else if (!oldPassword) return res.status(422).json({ 'error': 'Please provide a password.' });
+    else if (!newPassword) return res.status(422).json({ 'error': 'Please provide a new password.' });
+    else if (!confirmPassword) return res.status(422).json({ 'error': 'If you want to confirm a password, you have to supply something to confirm...' });
+    else if (newPassword != confirmPassword) return res.status(422).json({ 'error': `Passwords do not match.` })
+
+    // If we made it this far, update their password
+    try {
+        db.connect((err) => {
+            if (err) console.log(`Error connecting to ${config.db.database}: ${err}`);
+        });
+
+        const result = db.query(query.authenticateLoginUID, [uID], async function (err, results) {
+            if (err) { console.log(`*****${err}`); }
+            const comp = await bcrpyt.compare(oldPassword, results[0].password);
+
+            // Nasty way to handle this I know
+            if (comp) {
+                const salt = await bcrpyt.genSalt(config.jwt.saltRounds);
+                const hashPass = await bcrpyt.hash(newPassword, salt);
+
+                db.query(query.updatePassword, [hashPass, uID], async function (err, results) {
+                    if (err) console.log(`*****${err}`);
+
+                    if (results != null) { // If we found something, attempt to send json packet
+                        console.log(`***User '${uID}' password updated.`);
+                        res.send({
+                            message: "Insert ran successfully.",
+                            successCode: true
+                        });
+                    } else {
+                        console.log(`***Failed to update password for user '${uID}.'`);
+                        res.send({
+                            message: "Query ran successfully.",
+                            data: "User update failed. Try again??",
+                            successCode: false
+                        });
+                    }
+                });
+
+            } else { // If its not our user, tell em to F off
+                return res.status(422).json({
+                    'error': 'Invalid Password.'
+                })
+            }
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(403).json({
+            success: false,
+            message: err
+        })
+    }
+
 }
 function parseToken(token) {
     return jwt.verify(token.split(' ')[1], config.jwt.secret);

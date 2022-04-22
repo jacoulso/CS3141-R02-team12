@@ -22,23 +22,11 @@ export class ResetPasswordComponent implements OnInit {
   // Build our form, and read any params 
   ngOnInit(): void {
     this.initForm();
-    this.route.queryParams.subscribe((params) => {
-      const key1 = 'registered';
-      const key2 = 'loggedOut';
-      if (params[key1] === 'success') {
-        this.notify = 'You have been successfully registered. Please Log in';
-      }
-      if (params[key2] === 'success') {
-        this.notify = 'You have been logged out successfully';
-      }
-    });
-    if (this.service.isAuthenticated()) { // If we are already logged in, just go to the home page...
-      this.router.navigate(['/home'], { queryParams: {} });
-    }
   }
 
   initForm(): void {
     this.resetForm = this.fb.group({
+      uID: this.service.getUID(),
       oldPassword: ['', Validators.required],
       newPassword: ['', Validators.required, Validators.minLength(6)],
       confirmPassword: ['', Validators.required],
@@ -48,9 +36,15 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword() {
-
+    this.errors = [];
+    this.service.updatePassword(this.resetForm.value)
+      .subscribe(() => {
+        this.router.navigate(['/login'], { queryParams: { registered: 'success' } });
+      },
+        (errorResponse) => {
+          this.errors.push(errorResponse.error.error); // notice how we never ever look at this array C;
+        });
   }
-
 
   onSubmit() {
     this.submitted = true;
