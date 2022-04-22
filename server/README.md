@@ -21,6 +21,14 @@ Run `npm start` for a dev server. Navigate to `http://localhost:3000/` to check 
 - ``` /calendars/remove ``` removes a specific calendar based on a given user ID and calendar ID
 - ``` /calendars/calendar ``` gets a specific calendar based on a user ID and a calendar ID
 
+### Friends
+-------------------------------------------------------
+- ``` /friends ``` gets all friends associated with your user ID
+- ``` /friends/add ``` creates a friend associated with your user ID
+- ``` /friends/get/username ``` gets a 'friend' based on an username
+- ``` /friends/get/email ``` gets a 'friend' based on an email
+- ``` /friends/remove ``` removes a specific association based on your uID and the friend uID
+
 ### Events
 -------------------------------------------------------
 

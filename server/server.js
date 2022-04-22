@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routes/userRoutes');
 const calendarRouter = require('./routes/calendarRoutes');
 const eventRouter = require('./routes/eventRoutes');
+const friendRouter = require('./routes/friendRoutes');
 
 const app = express()
 app.use(cors());
@@ -16,6 +17,7 @@ const PORT = 3000;
 
 // Base routes for the various API's. See specific controllers for details
 app.use('/calendars', calendarRouter);
+app.use('/friends', friendRouter);
 app.use('/events', eventRouter);
 app.use('/', userRouter);
 

@@ -109,6 +109,7 @@ export class CalendarComponent implements OnInit {
     // @ts-ignore
     console.log(`End: ${1 + end?.getUTCMonth()}-${end?.getUTCDate()}-${end?.getUTCFullYear()} at ${end?.getUTCHours()}:${end?.getUTCMinutes()}`);
     //This is where we add to database
+    
   }
 
   handleDateClick(arg: DateClickArg) {
