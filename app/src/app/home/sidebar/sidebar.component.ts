@@ -27,7 +27,8 @@ export class SidebarComponent implements OnInit {
     doesn't exist despite the fact that we promise to load data upon the component initialization. Work around: give it 
     data that just gets overwritten immeditaley...
   */
-  public calendars = [{title: 'MakeCompilerHappy'}]; 
+  public calendars = [{title: 'jacoulso'}];
+  public friends = [{username: 'Jlmillim'},{username:'Sruss'},{username:'Asharkot'}, {username:'Rccole'}]
 
   constructor(
     private modalService: MdbModalService,
@@ -74,6 +75,13 @@ export class SidebarComponent implements OnInit {
         title: c.title 
       }
     }); 
+  }
+  getActiveFriends(): any {
+    return JSON.parse(localStorage.getItem("user_friends")!).map( (f: any) => {
+      return {
+        username: f.username
+      }
+    });
   }
 
 }

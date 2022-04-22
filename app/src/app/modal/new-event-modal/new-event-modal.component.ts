@@ -31,6 +31,7 @@ export class NewEventModalComponent implements OnInit {
       // eID is handled internally
       creatorID: this.service.getUID(),
       calendarID: this.getActiveCalendar(), // these are out of control of the user, so no validation needed
+      calID: ['',],
       colorID: [1],  // #### UNUSED IN FORM ####
       title: ['', Validators.required],
       isAllDay: [false],

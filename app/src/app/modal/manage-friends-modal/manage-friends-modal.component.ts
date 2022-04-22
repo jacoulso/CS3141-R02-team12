@@ -11,7 +11,7 @@ import {ApiserviceService} from "../../apiservice.service";
 })
 export class ManageFriendsModalComponent implements OnInit {
 
-    public friends = [{name: 'Sam Russ'},{name: 'Justin Milliman'}];
+    public friends = [{username: 'Jlmillim'},{username:'Sruss'},{username:'Asharkot'}, {username:'Rccole'}];
     manageFriendsForm!: FormGroup;
     errors: any = [];
 
@@ -32,7 +32,7 @@ export class ManageFriendsModalComponent implements OnInit {
   addFriend() {
     console.log(`Gaining a Friend :) ...`);
     this.errors = []; // reset justin case
-    this.service.addFriend(this.manageFriendsForm.value()).subscribe((res) => {
+    this.service.addFriend(this.manageFriendsForm.value().friendToAdd).subscribe((res) => {
           // Code for successful calendar add goes here...
           if (res.successCode) { window.location.reload(); } // Cheat code to close the modal and reload all the calendars and events...
         },
@@ -43,7 +43,7 @@ export class ManageFriendsModalComponent implements OnInit {
   removeFriend() {
     console.log(`Removing Friend :( ...`);
     this.errors = []; // reset justin case
-    this.service.removeFriend(this.manageFriendsForm.value()).subscribe((res) => {
+    this.service.removeFriend(this.manageFriendsForm.value().friendToRemove).subscribe((res) => {
           // Code for successful calendar add goes here...
           if (res.successCode) { window.location.reload(); } // Cheat code to close the modal and reload all the calendars and events...
         },
@@ -54,7 +54,7 @@ export class ManageFriendsModalComponent implements OnInit {
   getFriends(): any{
       return JSON.parse(localStorage.getItem("user_friends")!).map( (f: any) => {
           return {
-              name: f.name
+              username: f.username
           }
       });
   }

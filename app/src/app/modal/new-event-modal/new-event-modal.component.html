@@ -9,15 +9,21 @@
 </div>
 <div class="modal-body">
     <form [formGroup]="newEventForm" id="form" class="align-items-center">
-        <div class="form-row">
-            <div id="enterTitle" class="form pr-1">
+        <div id="calendarIDform" class="form-row py-1">
+            <mdb-form-control class="form-outline">
+                <input mdbInput type="text" id="calID" formControlName="calID"
+                       class="form-control">
+                <label mdbLabel class="form-label" for="calID"><strong>Calendar to add event to</strong></label>
+            </mdb-form-control>
+        </div>
+        <div id = "titleform" class="form-row">
                 <mdb-form-control class="form-outline">
                     <input mdbInput type="text" id="title" formControlName="title"
                            class="form-control">
                     <label mdbLabel class="form-label" for="title"><strong>Event Title</strong></label>
                 </mdb-form-control>
-            </div>
-            <div mdbDropdown id="selectFriends" class="dropdown">
+            <br>
+                <div mdbDropdown id="selectFriends" class="dropdown">
                     <button
                             class="btn btn-primary dropdown-toggle"
                             type="button"
@@ -29,12 +35,13 @@
                         Guests
                     </button>
                     <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Friend</a></li>
-                        <li><a class="dropdown-item" href="#">Fiend</a></li>
-                        <li><a class="dropdown-item" href="#">Fireant</a></li>
+                        <li><a class="dropdown-item">Jlmillim</a></li>
+                        <li><a class="dropdown-item">Sruss</a></li>
+                        <li><a class="dropdown-item">Asharkot</a></li>
+                        <li><a class="dropdown-item">Rccole</a></li>
                     </ul>
+                </div>
             </div>
-        </div>
         <label style="color:black"><strong>Priority:</strong> 1: High - 5: Low </label><br>
         <div id="priorityRadios" class="form-row py-1">
             <mdb-form-control>
