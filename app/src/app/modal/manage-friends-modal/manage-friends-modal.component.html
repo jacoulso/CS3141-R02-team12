@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Manage Friends</h5>
+    <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="modalRef.close()"
+    ></button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="manageFriendsForm" id="form" class="align-items-center">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Friend To Remove" aria-label="Friend To Remove."
+                   aria-describedby="button-addon2" formControlName="friendToRemove"/>
+            <button class="btn btn-primary btn-outline" (click)="removeFriend()">Remove
+            </button>
+        </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Friend To Add" aria-label="Friend To Add!"
+               aria-describedby="button-addon2" formControlName="friendToAdd"/>
+        <button class="btn btn-primary btn-outline" (click)="addFriend()">Add!
+        </button>
+    </div>
+    </form>
+    <strong>List of Friends:</strong>
+    <div *ngFor="let f of friends">
+        <label class="text-black" > {{f.name}}</label>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+        Close
+    </button>
+</div>

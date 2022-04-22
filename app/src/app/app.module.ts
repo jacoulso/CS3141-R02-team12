@@ -26,6 +26,7 @@ import { MdbRadioModule } from "mdb-angular-ui-kit/radio";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SocialModalComponent } from './modal/social-modal/social-modal.component';
 import { ImportModalComponent } from './modal/import-modal/import-modal.component';
+import { ManageFriendsModalComponent } from './modal/manage-friends-modal/manage-friends-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ImportModalComponent } from './modal/import-modal/import-modal.componen
     SocialModalComponent,
     ImportModalComponent,
     SettingsComponent,
+    ManageFriendsModalComponent,
   ],
   imports: [
     BrowserModule,

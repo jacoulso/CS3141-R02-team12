@@ -7,6 +7,7 @@ import { ImportModalComponent } from "../../modal/import-modal/import-modal.comp
 import { SocialModalComponent } from "../../modal/social-modal/social-modal.component";
 import { NewcalModalComponent } from "../../modal/newcal-modal/newcal-modal.component";
 import { ApiserviceService } from 'src/app/apiservice.service';
+import {ManageFriendsModalComponent} from "../../modal/manage-friends-modal/manage-friends-modal.component";
 
 
 @Component({
@@ -49,7 +50,9 @@ export class SidebarComponent implements OnInit {
   openSocialsModal() {
     this.modalRef = this.modalService.open(SocialModalComponent)
   }
-
+  openManageFriendsModal() {
+    this.modalRef = this.modalService.open(ManageFriendsModalComponent)
+  }
   // Calendar loading 
   ngOnInit(): void {
     this.loadAllCalendars();

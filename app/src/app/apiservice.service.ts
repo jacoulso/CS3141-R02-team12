@@ -125,5 +125,15 @@ export class ApiserviceService {
     return this._http.post(this.eventPath + `/delete`, body);
   }
 
+  // Add a friend to a user
+  public addFriend(body: any): Observable<any>{
+    return this._http.post(this.eventPath + `/add`, body);
+  }
+
+  // remove a friend from a user
+  public removeFriend(body: any): Observable<any>{
+    return this._http.post(this.eventPath + `/remove`, body);
+  }
+
 
 }
