@@ -61,6 +61,13 @@ export class CalendarComponent implements OnInit {
         this.removeJohn();
       }
     })
+    this.service.sam.subscribe(value => {
+      if(value == "add") {
+        this.addSam();
+      } else {
+        this.removeSam();
+      }
+    })
   }
 
   public ics = '';
@@ -213,6 +220,22 @@ export class CalendarComponent implements OnInit {
 
       ]
   }
+
+  exampleEvents1 = {
+    events: [
+      {
+        title: 'Sam1',
+        start: '2022-04-20',
+        id: "25"
+      },
+      {
+        title: 'Sam2',
+        start: '2022-04-19',
+        id: "26"
+      }
+
+    ]
+  }
   
   addJohn() {
     let calendar = this.calendarComponent.getApi();
@@ -223,6 +246,17 @@ export class CalendarComponent implements OnInit {
     let calendar = this.calendarComponent.getApi();
     calendar.getEventById("23")?.remove();
     calendar.getEventById("24")?.remove();
+  }
+
+  addSam() {
+    let calendar = this.calendarComponent.getApi();
+    calendar.addEventSource(this.exampleEvents1); 
+  }
+
+  removeSam() {
+    let calendar = this.calendarComponent.getApi();
+    calendar.getEventById("25")?.remove();
+    calendar.getEventById("26")?.remove();
   }
 
   ngOnInit(): void {

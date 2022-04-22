@@ -93,5 +93,13 @@ export class SidebarComponent implements OnInit {
       this.sender.addJohn("remove");
     }
   }
+
+  addSam() {
+    if ((document.getElementById("sam") as HTMLInputElement).checked) {
+      this.sender.addSam("add");
+    } else {
+      this.sender.addSam("remove");
+    }
+  }
   
 }
