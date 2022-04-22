@@ -101,15 +101,7 @@ export class CalendarComponent implements OnInit {
     let start = arg.event.start;
     let end = arg.event.end;
     let allDay = arg.event.allDay;
-    console.log(`Title: ${title}`);
-    console.log(`Priority: ${priority}`);
-    console.log(`AllDay: ${allDay}`);
-    // @ts-ignore
-    console.log(`Start: ${1 + start?.getUTCMonth()}-${start?.getUTCDate()}-${start?.getUTCFullYear()} at ${start?.getUTCHours()}:${start?.getUTCMinutes()}`);
-    // @ts-ignore
-    console.log(`End: ${1 + end?.getUTCMonth()}-${end?.getUTCDate()}-${end?.getUTCFullYear()} at ${end?.getUTCHours()}:${end?.getUTCMinutes()}`);
-    //This is where we add to database
-    
+    console.log(priority);
   }
 
   handleDateClick(arg: DateClickArg) {
@@ -176,10 +168,6 @@ export class CalendarComponent implements OnInit {
         borderColor: "red"
       })
     }
-    calendarApi.getEvents().forEach(item => {
-      console.log("Title: " + item.title);
-    }
-    );
   }
 
   uploadICS(ics: string) {

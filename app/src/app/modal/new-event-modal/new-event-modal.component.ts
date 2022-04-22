@@ -48,6 +48,7 @@ export class NewEventModalComponent implements OnInit {
   }
   addEvent() {
     console.log(`Saving event...`);
+    this.getNewEvent();
     this.errors = []; // reset justin case
     this.service.addEvent(this.newEventForm.value).subscribe((res) => {
       // Code for successful event add goes here...
@@ -64,7 +65,7 @@ export class NewEventModalComponent implements OnInit {
   getNewEvent() {
     let title = (document.getElementById("title") as HTMLInputElement).value;
     if (title) {
-      let priority = (document.getElementById("priority") as HTMLInputElement).value;
+      let priority = (document.querySelector('input[formControlName="priorityID"]:checked') as HTMLInputElement).value
       let allDay = (document.getElementById("allDay") as HTMLInputElement).checked;
       let startDate = new Date((document.getElementById("start") as HTMLInputElement).value);
       let endDate = new Date((document.getElementById("end") as HTMLInputElement).value);
@@ -74,7 +75,6 @@ export class NewEventModalComponent implements OnInit {
         this.sender.allDay = allDay;
         this.sender.start = startDate;
         this.sender.end = endDate;
-        (document.getElementById("form") as HTMLFormElement).reset();
         this.sender.addEvent(title);
       }
       else {
@@ -92,7 +92,4 @@ export class NewEventModalComponent implements OnInit {
       this.sender.sendString("url");
     }
   }
-
-
-
 }
